@@ -59,8 +59,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="password" id="password" name="password">
                     </div>
                     <div class="input-group">
+                        <a href="_forgot.php" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <br>
+                    <div class="input-group">
                         <input type="submit" name="submit" value="Login">
                     </div>
+
+
                     <?php
                     if (isset($loginError)) {
                         echo "<p class='error'>$loginError</p>";

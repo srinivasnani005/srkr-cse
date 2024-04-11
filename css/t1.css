@@ -276,6 +276,7 @@ input[type="submit"]:active {
     transform: scale(0.95);
 }
 
+
 .error {
     color: var(--error-color);
     margin-top: 15px;
@@ -292,8 +293,10 @@ input[type="submit"]:active {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .modal-content {
@@ -373,11 +376,16 @@ input[type="submit"]:active {
     input[type="submit"] {
         padding: 12px;
         font-size: 16px;
+        margin-top: 10px;
     }
 
     .error {
         margin-top: 10px;
         font-size: 14px;
+    }
+
+    .modal{
+        margin-top:60px;
     }
 }
 
