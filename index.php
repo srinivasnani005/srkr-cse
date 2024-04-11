@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SRKR Engineering College</title>
+    <link rel="icon" href="path/to/favicon.png" type="image/png">
     <link rel="stylesheet" href="css/t1.css">
 </head>
 <body>
