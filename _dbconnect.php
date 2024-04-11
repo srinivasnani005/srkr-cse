@@ -1,4 +1,3 @@
-<!-- connection establishment for the databse ncu and with phpmyadmin -->
 <?php
 $servername = "sql6.freesqldatabase.com";
 $username = "sql6698211";
