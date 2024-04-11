@@ -5,7 +5,6 @@
             <h2>NAAC Grade: A+</h2>
         </div>
         <div class="modal-body">
-            <!-- Add image or any other content here -->
             <img src="naac.jpg" alt="">
         </div>
     </div>
