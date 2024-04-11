@@ -1,33 +1,16 @@
-<section id="content">
-<nav>
-			<i class='bx bx-menu toggle-sidebar' ></i>
-			<form action="search.php" method="get">
-				<div class="form-group">
-					<input type="text" placeholder="Search..." name="search">
-					<i class='bx bx-search icon' ></i>
-				</div>
-			</form>
-			<a href="#" class="nav-link">
-				<i class='bx bxs-bell icon' ></i>
-				<span class="badge">5</span>
-			</a>
-			<a href="#" class="nav-link">
-				<i class='bx bxs-message-square-dots icon' ></i>
-				<span class="badge">8</span>
-			</a>
-			<span class="divider"></span>
-			<div class="profile">
-                <?php
-                // $username = $_SESSION['username'];
-                $imageURL = "logo.png";
-                echo "<img src='{$imageURL}' alt='Admin Image'>";
-                ?>
-                <ul class="profile-link">
-                    <li><a href="#" id="profile-link" class="body-link" data-section="profile"><i class='bx bxs-user-circle icon'></i> Admin Profile</a></li>
-                    <li><a href="#" class="body-link" data-section="settings"><i class='bx bxs-cog'></i> Settings</a></li>
-                    <li><a href="?logout=1"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
-                </ul>
-            </div>
-
-
-		</nav>
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="logo">
+        <a href="/New">
+            <img src="srkrlogo.png" alt="Srkr Logo">
+        </a>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="cta">
+        <a href="_login.php" class="btn signin">Sign In</a>
+      </div>
+    </div>
+  </div>
+</header>
