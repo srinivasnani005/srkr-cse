@@ -1,13 +1,13 @@
 <?php
-    // $servername = "sql6.freesqldatabase.com";
-    // $username = "sql6698211";
-    // $password = "ymWFtw4aWS";
-    // $dbname = "sql6698211";
+    $servername = "sql6.freesqldatabase.com";
+    $username = "sql6698211";
+    $password = "ymWFtw4aWS";
+    $dbname = "sql6698211";
 
-    $servername = 'localhost';
-    $username = 'root';
-    $password = "";
-    $dbname = "ncu";
+    // $servername = 'localhost';
+    // $username = 'root';
+    // $password = "";
+    // $dbname = "ncu";
 
 
 
