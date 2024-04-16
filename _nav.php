@@ -2,11 +2,11 @@
   <div class="header-inner">
     <div class="header-left">
       <div class="logo">
-        <a href="">
+        <a href="./">
             <img src="srkrlogo.png" alt="Srkr Logo">
         </a>
       </div>
-    </div>
+    </div>  
     <div class="header-right">
       <div class="cta">
         <a href="_login.php" class="btn signin">Sign In</a>

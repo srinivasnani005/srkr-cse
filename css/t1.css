@@ -203,9 +203,9 @@ main {
     background-color: #ececec;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 300px;
     max-width: 90%;
-    padding: 40px;
+    padding: 30px;
     margin: 0 auto;
 }
 
@@ -219,7 +219,7 @@ main {
 h2 {
     text-align: center;
     color: var(--primary-color);
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     font-size: 24px;
 }
 
@@ -227,13 +227,13 @@ label {
     display: block;
     margin-bottom: 10px;
     color: #24292e;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 input[type="text"],
 input[type="password"] {
     width: 100%;
-    padding: 15px;
+    padding: 8px;
     margin-bottom: 30px;
     box-sizing: border-box;
     border: 1px solid var(--border-color);
@@ -260,7 +260,7 @@ input[type="submit"] {
     text-decoration: none;
     width:100%;
     cursor: pointer;
-    margin-right: 30px;
+    margin-right: 20px;
     transition: background-color 0.3s ease;
     box-shadow: 2px 5px 5px rgba(0, 82, 255, .1), 1px 10px 25px rgba(0, 82, 255, .1), 2px 5px 30px rgba(0, 82, 255, .3);
 
@@ -294,24 +294,25 @@ input[type="submit"]:active {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
 }
 
 .modal-content {
-    background-color: #ffffff4c;
+    background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     margin: 10% auto;
     border-radius: 8px;
-    max-width: 300px;
+    max-width: 90%; 
+    width: 200px; 
     padding: 20px;
 }
 
 .close {
     color: #aaa;
-    float: right;
-    font-size: 28px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -319,7 +320,6 @@ input[type="submit"]:active {
 .close:hover,
 .close:focus {
     color: #333;
-    text-decoration: none;
 }
 
 .modal-header h2 {

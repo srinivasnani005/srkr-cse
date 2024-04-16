@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result_student = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result_student) == 1) {
-            $_SESSION['loggedin'] = true;
+            $_SESSION[] = true;
             $_SESSION['user_type'] = 'student';
             header('Location: Student/dashboard.php'); 
             exit();
