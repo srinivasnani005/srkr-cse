@@ -1,14 +1,19 @@
 <?php
-    $servername = "sql6.freesqldatabase.com";
-    $username = "sql6698211";
-    $password = "ymWFtw4aWS";
-    $dbname = "sql6698211";
+    // $servername = "sql6.freesqldatabase.com";
+    // $username = "sql6698211";
+    // $password = "ymWFtw4aWS";
+    // $dbname = "sql6698211";
 
-    // $servername = 'localhost';
+    $servername = 'localhost';
+    $username = 'root';
+    $password = "";
+    $dbname = "ncu";
+
+
+    // $servername = 'viaduct.proxy.rlwy.net';
     // $username = 'root';
-    // $password = "";
-    // $dbname = "ncu";
-
+    // $password = "YEMQwlWdtDNMDtGJGZXdEvAAkbeOTwzA";
+    // $dbname = "railway";
 
 
 
@@ -17,4 +22,3 @@
         die("Connection failed: " . mysqli_connect_error());
     }
 ?>
-

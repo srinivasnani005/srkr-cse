@@ -1,342 +1,213 @@
 <?php
 session_start();
 
+$var = isset($_SESSION['var']) ? $_SESSION['var'] : false;
 
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ncu";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (substr($_SERVER['REQUEST_URI'], -7) === "/Admin/" || !$var) {
+    header("Location: ../");
+    exit();
 }
 
-function sanitize_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-
-$studentLoginError = $teacherLoginError = '';
+$loginSuccess = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["student_login"])) {
-        if(isset($_POST["studentUsername"]) && isset($_POST["studentPassword"])) {
-            $studentUsername = sanitize_input($_POST["studentUsername"]);
-            $studentPassword = sanitize_input($_POST["studentPassword"]);
-            
-            $student_sql = "SELECT * FROM student_tb WHERE Register_Number='$studentUsername' AND Password='$studentPassword'";
-            $student_result = $conn->query($student_sql);
+    // Replace these with your actual database connection details
+    $servername = "localhost";
+    $username = "root";
+    $password = ""; // Assuming no password
+    $dbname = "ncu"; // Database name
+    $tablename = "admin_tb"; // Table name
 
-            if ($student_result && $student_result->num_rows == 1) {
-                $_SESSION["username"] = $studentUsername;
-                $_SESSION["user_type"] = 'student';
-                
-                header("Location: Student/student_dashboard.php");
-                exit();
-            } else {
-                $studentLoginError = "Invalid username or password";
-                
-            }
-        }
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
 
+    // Get username and password from form
+    $enteredUsername = $_POST["username"];
+    $enteredPassword = $_POST["password"];
 
+    // Prepare SQL statement to check if user exists with the provided credentials
+    $sql = "SELECT * FROM $tablename WHERE username='$enteredUsername' AND password='$enteredPassword'";
+    $result = $conn->query($sql);
 
-    if (isset($_POST["teacher_login"])) {
-        if(isset($_POST["teacherUsername"]) && isset($_POST["teacherPassword"])) {
-            $teacherUsername = sanitize_input($_POST["teacherUsername"]);
-            $teacherPassword = sanitize_input($_POST["teacherPassword"]);
-            
-            $teacher_sql = "SELECT * FROM teacher WHERE Teacher_ID='$teacherUsername' AND Date_of_Birth='$teacherPassword'";
-            $teacher_result = $conn->query($teacher_sql);
-
-            if ($teacher_result && $teacher_result->num_rows == 1) {
-                $_SESSION["username"] = $teacherUsername;
-                $_SESSION["user_type"] = 'teacher';
-                
-        header("Location: teacher/teacher_dashboard.php");
-                exit();
-            } else {
-                $teacherLoginError = "Invalid username or password";
-            }
-        }
+    // If user exists, set loginSuccess to true and store username in session
+    if ($result->num_rows > 0) {
+        $loginSuccess = true;
+        $_SESSION["username"] = $enteredUsername;
+        $_SESSION["user_type"] = 'admin';
+        header("Location: index.php");
+        exit();
     }
+
+    $conn->close();
 }
-
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Blender Website</title>
-  <link rel="stylesheet" href="css/login.css">
-  <style>
-    
-  </style>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/always-grey.png'); /* Background texture */
+            animation: backgroundAnimate 10s infinite linear;
+        }
+
+        @keyframes backgroundAnimate {
+            from { background-position: 0 0; }
+            to { background-position: 100px 75px; }
+        }
+
+        .login-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: scale(1.05);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px #4CAF50;
+            transform: scale(1.02);
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: calc(100% - 20px);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        input[type="submit"]:active {
+            background-color: #3e8e41;
+            transform: scale(0.95);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .error-message.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+
+        /* Additional animations */
+        .animated-text {
+            font-size: 20px;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .animated-text.visible {
+            opacity: 1;
+        }
+
+        /* Additional animation for success message */
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .success-message.visible {
+            opacity: 1;
+        }
+
+
+
+        
+    </style>
 </head>
 <body>
-
-<header class="header">
-  <div class="header-inner">
-    <div class="header-left">
-        <div class="logo">
-            <img src="srkrlogo.png" alt="Blender Logo">
-          </div>
-    </div>
-    <div class="header-right">
-        <!-- <nav class="nav">
-            <ul class="nav-list">
-              <li><a href="#">Student</a></li>
-              <li><a href="#">Teacher</a></li>
-              <li><a href="#">Support</a></li>
-              <li><a href="#">Naac Grade</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#"></a></li>
-            </ul>
-      
-          </nav> -->
-          <div class="cta">
-            <!-- <button class="btn signup">Sign Up</button> -->
-            <button class="btn signin">Sign In</button>
-          </div>
-    </div>
-  </div>
-</header>
-
-
-
-<main>
-  <div class="background-image">
-    <div class="background-content">
-        <h1 class="background-title">SRKR Engineering College</h1>
-        <p class="background-text">To emerge as a world-class technical institution that strives for the socio-ecological well-being of the society.</p>
-        <a href="#" class="download-btn">NAAC Grade</a>
-        <a href="#" class="whats-new-btn">What's New</a>
+    <div class="login-container">
+        <?php if ($loginSuccess): ?>
+            <h2 class="animated-text visible">Welcome Back!</h2>
+            <p class="success-message visible">Login Successful!</p>
+        <?php else: ?>
+            <h2 class="animated-text">Welcome Admin!</h2>
+        <?php endif; ?>
+        <form id="login-form" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <br><br>
+            <input type="password" name="password" placeholder="Password" required>
+            <br><br>
+            <input type="submit" value="Login">
+            <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !$loginSuccess): ?>
+                <p class="error-message shake">Invalid username or password!</p>
+                <script>
+                    // Add JavaScript logic to remove shake animation and hide error message after 6 seconds
+                    var errorMessage = document.querySelector('.error-message');
+                    errorMessage.classList.add('shake');
+                    setTimeout(function() {
+                        errorMessage.classList.remove('shake');
+                        errorMessage.style.opacity = '0';
+                    }, 6000); // Hide the error message after 6 seconds
+                </script>
+            <?php endif; ?>
+        </form>
     </div>
 
-
-
-    <div class="form-container" style="display:none;">
-        <div id="outerContainer">
-            <div class="select-left" id="container">
-                <div id="item"></div>
-                <div class="left">
-                    <span>Student</span>
-                </div>
-                <div class="right">
-                    <span>Teacher</span>
-                </div>
-            </div>
-        </div>
-
-
-            
-        <div id="studentLogin" class="login-form" style="display:none;">
-        <br>
-            <h2>Student Login</h2>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <label for="studentUsername">Username:</label>
-                <input type="text" id="studentUsername" name="studentUsername">
-                
-                <label for="studentPassword">Password:</label>
-                <input type="password" id="studentPassword" name="studentPassword">
-                
-                <!-- add forgot password here  -->
-                <a href="forgot_password1.php">Forgot Password?</a>
-                <br>
-                <br>
-
-
-
-                <input type="submit" name="student_login" value="Login">
-                <?php
-                if (!empty($studentLoginError)) {
-                    echo "<p class='error'>$studentLoginError</p>";
-                }
-                ?>
-            </form>
-        </div>
-
-        <div id="teacherLogin" class="login-form" style="display: none;">
-        <br>
-            <h2>Teacher Login</h2>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <label for="teacherUsername">Username:</label>
-                <input type="text" id="teacherUsername" name="teacherUsername">
-                
-                <label for="teacherPassword">Password:</label>
-                <input type="password" id="teacherPassword" name="teacherPassword">
-                
-                <a href="forgot_password1.php">Forgot Password?</a>
-                <br>
-                <br>
-
-                <input type="submit" name="teacher_login" value="Login">
-                <?php
-                if (!empty($teacherLoginError)) {
-                    echo "<p class='error'>$teacherLoginError</p>";
-                }
-                ?>
-            </form>
-            </div>
-        </div>
-  </div>
-
-  <div class="body-content">
-
-
-  </div>
-</main>
-
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-column">
-      <h3>Academic Data Management System (ADMS)</h3>
-      <p>Empowering educational institutions with efficient student data management.</p>
-      <p>Contact us: srkr@srkrec.ac.in</p>
-    </div>
-
-
-
-    <div class="footer-column">
-  <h3>Knowledge Base</h3>
-  <ul class="footer-links">
-    <li><a href="#">FAQ</a></li>
-    <li><a href="#">User Guides</a></li>
-    <li><a href="#">Documentation</a></li>
-  </ul>
-</div>
-
-<div class="footer-column">
-  <h3>Connect with ADMS</h3>
-  <p>Stay updated and engage with us:</p>
-  <ul class="footer-links">
-    <li><a href="#">Follow us on Twitter</a></li>
-    <li><a href="#">Like us on Facebook</a></li>
-    <li><a href="#">LinkedIn Page</a></li>
-  </ul>
-</div>
-
-<div class="footer-column">
-  <h3>Partnerships</h3>
-  <p>Collaborate with us to enhance student data management:</p>
-  <ul class="footer-links">
-    <li><a href="#">NAAC</a></li>
-    <li><a href="#">NBA</a></li>
-    <li><a href="#">Other Educational Institutions</a></li>
-  </ul>
-</div>
-</div>
-</footer>
-
-
-
-<script>
-    document.querySelector('.signin').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default link behavior
-        document.querySelector('.form-container').style.display = 'block';
-        document.querySelector('.background-content').style.display = 'none';
-    });
-
-    var dragItem = document.querySelector("#item");
-    var container = document.querySelector("#container");
-    var studentForm = document.getElementById("studentLogin");
-    var teacherForm = document.getElementById("teacherLogin");
-
-    var isDragging = false;
-    var initialX = 0;
-    var xOffset = 0;
-    var minOffset = 0;
-    var maxOffset = 150;
-
-    container.addEventListener("mousedown", dragStart, false);
-    container.addEventListener("mousemove", drag, false);
-    container.addEventListener("mouseup", dragEnd, false);
-    container.addEventListener("mouseleave", dragEnd, false);
-    container.addEventListener("click", toggleFormsOnClick, false);
-
-    container.addEventListener("touchstart", dragStart, false);
-    container.addEventListener("touchmove", drag, false);
-    container.addEventListener("touchend", dragEnd, false);
-
-    function dragStart(e) {
-        e.preventDefault();
-        if (e.type === "touchstart") {
-            initialX = e.touches[0].clientX - xOffset;
-        } else {
-            initialX = e.clientX - xOffset;
-        }
-        isDragging = true;
-    }
-
-    function drag(e) {
-        if (isDragging) {
-            var x;
-            if (e.type === "touchmove") {
-                x = e.touches[0].clientX - initialX;
-            } else {
-                x = e.clientX - initialX;
-            }
-            xOffset = Math.min(Math.max(x, minOffset), maxOffset);
-            setTranslate(xOffset);
-        }
-    }
-
-    function dragEnd(e) {
-        isDragging = false;
-        if (xOffset > (maxOffset - minOffset) / 2) {
-            xOffset = maxOffset;
-            toggleForms("teacher");
-        } else {
-            xOffset = minOffset;
-            toggleForms("student");
-        }
-        setTranslate(xOffset);
-    }
-
-    function setTranslate(x) {
-        dragItem.style.transform = "translate3d(" + x + "px, 0, 0)";
-    }
-
-    function toggleForms(type) {
-        if (type === "teacher") {
-            studentForm.style.display = "none";
-            teacherForm.style.display = "block";
-        } else {
-            studentForm.style.display = "block";
-            teacherForm.style.display = "none";
-        }
-    }
-
-    function toggleFormsOnClick(e) {
-        if (e.clientX - container.getBoundingClientRect().left > maxOffset / 2) {
-            xOffset = maxOffset;
-            toggleForms("teacher");
-        } else {
-            xOffset = minOffset;
-            toggleForms("student");
-        }
-        setTranslate(xOffset);
-    }
-
-
-
-    // if the teacher form is dispplayed then the student span text color should be in blue 
-    // and teacher span text color should be in black
-
-    studentForm.style.display = "block";
-
-</script>
-
+    <script>
+        // Additional JavaScript for animated text
+        window.onload = function() {
+            document.querySelector('.animated-text').classList.add('visible');
+            <?php if ($loginSuccess): ?>
+                document.querySelector('.success-message').classList.add('visible');
+            <?php endif; ?>
+        };
+    </script>
 </body>
 </html>

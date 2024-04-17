@@ -1,5 +1,27 @@
 <?php
 session_start();
+
+
+if (!isset($_SESSION["username"])) {
+    header("Location: ../"); 
+    exit();
+}
+
+
+if ($_SESSION["user_type"] != "admin") {
+    header("Location: ../");
+    exit();
+}
+
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
+
 ?>
 <!doctype html>
 <html lang="en">

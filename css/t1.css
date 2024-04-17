@@ -359,7 +359,7 @@ input[type="submit"]:active {
     input[type="text"],
     input[type="password"] {
         padding: 12px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         font-size: 14px;
     }
 
@@ -370,13 +370,13 @@ input[type="submit"]:active {
 
     label {
         font-size: 16px;
-        margin-bottom: 8px;
+        margin-bottom: 15px;
     }
 
     input[type="submit"] {
         padding: 12px;
         font-size: 16px;
-        margin-top: 10px;
+        margin-top: 20px;
     }
 
     .error {
