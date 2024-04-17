@@ -1,6 +1,6 @@
 <?php
 $activeSection = 'Folder';
-include '_dbconnect.php';
+include '../_dbconnect.php';
 
 
 
@@ -59,8 +59,8 @@ function getFolders($dir) {
      <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/temp.css">
-    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="../css/temp.css">
+    <script src="../js/script.js" defer></script>
     <style>
        
        .unique-folder-container {
