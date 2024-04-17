@@ -3,7 +3,7 @@
 			<i class='bx bx-menu toggle-sidebar' ></i>
 			<form action="search.php" method="get">
 				<div class="form-group">
-					<input type="text" placeholder="Search..." name="search">
+					<input type="text" placeholder="Search..." name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
 					<i class='bx bx-search icon' ></i>
 				</div>
 			</form>

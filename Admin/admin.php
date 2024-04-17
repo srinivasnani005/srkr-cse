@@ -344,7 +344,7 @@ if ($id_from_url !== $correct_id) {
             fadeOut(container);
             
             setTimeout(function() {
-                window.location.href = 'Admin/index.php';
+                window.location.href = 'Admin/login.php';
             }, 500);
         }
     </script>

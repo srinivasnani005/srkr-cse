@@ -15,7 +15,7 @@
             $username = $_SESSION['username'];
             echo strtoupper($username);
         } else {
-            echo "StudentSite";
+            echo "ADMIN";
         }
         ?>
     </a>

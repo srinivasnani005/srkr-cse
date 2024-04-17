@@ -1,6 +1,6 @@
 <?php
 $activeSection = 'search';
-include '_dbconnect.php';
+include '../_dbconnect.php';
 
 $searchvalue = $_GET['search'];
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->query($sql) === TRUE) {
         // User data updated successfully
         // Redirect to the same page to refresh the data
-        header("Location: student_profile1.php");
+        header("Location: search.php");
         exit();
     } else {
         // Error updating user data
@@ -57,9 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/search.css">
-    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <script src="../js/script.js" defer></script>
     <title>Search Student</title>
 </head>
 
