@@ -1,7 +1,10 @@
 RewriteEngine On
-RewriteBase /srkr.me/
+RewriteBase /
 
-# Rewrite rule for accessing admin.php with ID parameter
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([^/]+)/?$ Admin/admin.php?id=$1 [L,QSA]
+# Redirect requests to srkr.me/SRKRCSE to admin.php
+RewriteCond %{REQUEST_URI} ^/SRKRCSE$
+RewriteRule ^(.*)$ /Admin/admin.php [L]
+
+# Redirect any other requests to srkr.me
+RewriteCond %{REQUEST_URI} !^/Admin/admin\.php$
+RewriteRule ^(.*)$ http://srkr.me [L,R=301]
