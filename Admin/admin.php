@@ -1,9 +1,7 @@
 <?php
-
 session_start();
 
 $_SESSION['var'] = FALSE;
-
 
 if (!isset($_GET['id'])) {
     http_response_code(403);
@@ -80,15 +78,15 @@ if (!isset($_GET['id'])) {
     <div class='error-container'>
         <h1>Access Forbidden</h1>
         <p>Oops! You don't have permission to access this page.</p>
-        <p>Redirecting in <span id='countdown'>6</span> seconds...</p>
+        <p>Redirecting to <a href='https://srkr.me'>srkr.me</a> in <span id='countdown'>5</span> seconds...</p>
     </div>
 
     <script>
-        var countdown = 6;
+        var countdown = 5;
         var countdownElement = document.getElementById('countdown');
 
-        function redirectToParent() {
-            window.location.href = './';
+        function redirectToSRKR() {
+            window.location.href = 'https://srkr.me';
         }
 
         function updateCountdown() {
@@ -96,7 +94,7 @@ if (!isset($_GET['id'])) {
             countdownElement.textContent = countdown;
 
             if (countdown <= 0) {
-                redirectToParent();
+                redirectToSRKR();
             } else {
                 setTimeout(updateCountdown, 1000); // Update countdown every second
             }
@@ -187,15 +185,15 @@ if ($id_from_url !== $correct_id) {
         <div class='error-container'>
             <h1>Access Forbidden</h1>
             <p>Oops! You don't have permission to access this page.</p>
-            <p>Redirecting in <span id='countdown'>6</span> seconds...</p>
+            <p>Redirecting to <a href='https://srkr.me'>srkr.me</a> in <span id='countdown'>5</span> seconds...</p>
         </div>
     
         <script>
-            var countdown = 6;
+            var countdown = 5;
             var countdownElement = document.getElementById('countdown');
     
-            function redirectToParent() {
-                window.location.href = './';
+            function redirectToSRKR() {
+                window.location.href = 'https://srkr.me';
             }
     
             function updateCountdown() {
@@ -203,7 +201,7 @@ if ($id_from_url !== $correct_id) {
                 countdownElement.textContent = countdown;
     
                 if (countdown <= 0) {
-                    redirectToParent();
+                    redirectToSRKR();
                 } else {
                     setTimeout(updateCountdown, 1000); // Update countdown every second
                 }
