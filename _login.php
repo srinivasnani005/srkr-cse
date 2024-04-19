@@ -3,14 +3,13 @@ include '_dbconnect.php';
 
 session_start();
 
-// Check if user is already logged in and redirect to respective dashboard
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     if (isset($_SESSION['user_type'])) {
         if ($_SESSION['user_type'] === 'teacher') {
             header('Location: teacher/dashboard.php');
             exit();
         } elseif ($_SESSION['user_type'] === 'student') {
-            header('Location: student/dashboard.php');
+            header('Location: Student/dashboard.php');
             exit();
         }
     }
@@ -29,13 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($result_student) == 1) {
             $row = mysqli_fetch_assoc($result_student);
             if ($row['is_verified'] == 1) {
-                // User is verified, proceed with login
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user_type'] = 'student';
-                header('Location: student/dashboard.php');
+                $_SESSION['Register_Number'] = $username;
+                header('Location: Student/dashboard.php');
                 exit();
             } else {
-                // User is not verified, show notification
                 $verificationMessage = "Please verify your email before logging in.";
             }
         } else {

@@ -9,6 +9,8 @@
 	box-sizing: border-box;
 }
 
+
+
 :root {
     --grey: #F1F0F6;
     --dark-grey: #8D8D8D;
@@ -1452,4 +1454,81 @@ margin-right: 10px;
 cursor: pointer;
 border-radius: 5px;
 transition: background-color 0.3s;
+}
+
+
+
+
+
+  /* create form css */
+
+
+  .create-form-box {
+    max-width: 370px;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.create-form-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.create-form-title {
+    font-weight: 600;
+    color: #2a4365;
+    line-height: 1.75rem;
+}
+
+.create-form-description {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #4a5568;
+}
+
+.create-form-description a {
+    color: #3182ce;
+}
+
+.create-form-description a:hover {
+    text-decoration: underline;
+}
+
+
+.create-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align items to the end of the container */
+    margin-top: 1rem;
+}
+
+/* Align the button to the right side of the form */
+.create-form-button {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    background-color: var(--blue);
+    font-weight: 500;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    padding: 0.625rem 1rem;
+    border: none;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-left: auto; /* Align the button to the right */
+    margin-bottom: 1rem;
+}
+
+.create-form-button:hover {
+    background-color: var(--green-clr);
+}
+
+.create-form-button:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
 }

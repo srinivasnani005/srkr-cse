@@ -356,7 +356,7 @@ function Verification($email, $register_number, $name)
                         <label class="label" for="branch">Branch:</label>
                         <select class="upload-input" id="branch" name="branch">
                             <?php
-                            $branches = array("CSE", "ECE", "EEE", "CIVIL", "AIDS", "CSD", "MECH");
+                        $branches = array("CSE", "ECE", "EEE", "CIVIL", "AIDS", "CSD", "MECH", "AIML", "IT");
                             foreach ($branches as $branch) {
                                 echo '<option value="' . $branch . '">' . $branch . '</option>';
                             }

@@ -1,7 +1,9 @@
 <?php
 $activeSection = 'leaderboard';
-include '_dbconnect.php';
 
+include '../_dbconnect.php';
+
+// call the file once to update the count 
 ?>
 <!doctype html>
 <html lang="en">
@@ -14,8 +16,8 @@ include '_dbconnect.php';
      <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/temp.css">
-    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="../css/temp.css">
+    <script src="../js/script.js" defer></script>
     <title>Dashboard</title>
 </head>
 
@@ -36,8 +38,6 @@ include '_dbconnect.php';
                 </div>
                 <div class="dashboard-header-right">Total Count :<?php echo 1;  ?></div>
             </div>
-
-
 
             <div class="leaderboard-container">
                     <table class="leaderboard-table">
@@ -60,7 +60,7 @@ include '_dbconnect.php';
                         <tbody>
 
                             <?php
-                            $sql = "SELECT * FROM student_tb";
+                            $sql = "SELECT * FROM student_tb ORDER BY count DESC";
                             $result = $conn->query($sql);
 
                             if ($result->num_rows > 0) {
@@ -73,9 +73,6 @@ include '_dbconnect.php';
                                     echo "<td>{$eachcount['Branch']}</td>";
                                     $total_count = isset($eachcount['count']) ? $eachcount['count'] : 0;
                                     echo "<td>{$total_count}</td>";
-
-
-
 
                                     for ($i = 1; $i <= 14; $i++) {
                                         $table_name = "S" . $i;
@@ -92,32 +89,19 @@ include '_dbconnect.php';
                                         
                                     }
                                     $serialcount++;
+                                    echo "</tr>";
 
                                 }
-                                echo "</tr>";
                             }
                             ?>
                         </tbody>
                     </table>
                 </div>
-
-
-
-
-
-
-
         </div>
     </main>
-
- 
-
     </section>
 
     <script>
-        
-
-
     </script>
 </body>
 

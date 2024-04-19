@@ -1,3 +1,10 @@
+<head>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../css/temp.css">
+    <script src="../js/script.js" defer></script>
+</head>
 <style>
     .college-logo {
         width: 50px;
@@ -7,12 +14,14 @@
     }
 </style>
 <section id="sidebar">
-    <a href="/New" class="brand">
+    <a href="" class="brand">
         <img src="logo.png" alt="SRKR Logo" class="college-logo">
-        <?php 
-        if(isset($_SESSION['username'])) {
-            // change the text to uppercase
-            $username = $_SESSION['username'];
+        <?php         
+
+     
+
+        if(isset($_SESSION['Register_Number'])) {
+            $username = $_SESSION['Register_Number'];
             echo strtoupper($username);
         } else {
             echo "StudentSite";
@@ -34,8 +43,9 @@
             </ul>
         </li>
         <li><a href="leaderboard.php" class="body-link <?php echo ($activeSection === 'leaderboard') ? 'active' : ''; ?>" data-section="leaderboard"><i class='bx bxs-chart icon' ></i>LeaderBoard</a></li>
-        <li><a href="create_account.php" class="body-link <?php echo ($activeSection === 'createaccount') ? 'active' : ''; ?>" data-section="createaccount"><i class='bx bxs-group icon' ></i>Certificates</a></li>
-        <li><a href="folder.php" class="body-link <?php echo ($activeSection === 'Folder') ? 'active' : ''; ?>" id="load_content_btn" data-section="Folder"><i class='bx bxs-widget icon' ></i>/</a></li>
+        <!-- <li><a href="certificates.php" class="body-link <?php echo ($activeSection === 'certificates') ? 'active' : ''; ?>" data-section="certificates"><i class='bx bxs-book icon' ></i>Certificates</a></li> -->
+        <li><a href="uploadform.php" class="body-link <?php echo ($activeSection === 'uploadform') ? 'active' : ''; ?>" data-section="uploadform"><i class='bx bxs-widget icon' ></i>Upload Form</a></li>
+        <!-- <li><a href="folder.php" class="body-link <?php echo ($activeSection === 'Folder') ? 'active' : ''; ?>" id="load_content_btn" data-section="Folder"><i class='bx bxs-widget icon' ></i>/</a></li> -->
         <li class="divider" data-text="study and forms"></li>
         <li><a href="#" class="body-link" data-section="yourcertificates"><i class='bx bx-table icon' ></i>Your Certificates</a></li>
         <li>

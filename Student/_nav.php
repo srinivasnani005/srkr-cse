@@ -1,3 +1,15 @@
+<?php
+
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+
+}
+?>
+
+
 <section id="content">
 <nav>
 			<i class='bx bx-menu toggle-sidebar' ></i>
