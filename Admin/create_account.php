@@ -39,12 +39,12 @@ if (isset($_POST["logout"])) {
 }
 
 
-function generateVerificationCode()
-{
-    return bin2hex(random_bytes(25));
-}
+// function generateVerificationCode()
+// {
+//     return bin2hex(random_bytes(25));
+// }
 
-$verification_code = generateVerificationCode();
+// $verification_code = generateVerificationCode();
 
 if (isset($_POST["submit"])) {
 
@@ -64,7 +64,7 @@ if (isset($_POST["submit"])) {
         // Check if required fields are not empty before insertion
         if (!empty($name) && !empty($register_number) && !empty($email) && !empty($year) && !empty($branch) && !empty($section)) {
 
-            Verification($email, $register_number, $name, $verification_code);
+            Verification($email, $register_number, $name);
             $stmt->execute();
         }
     }
@@ -77,7 +77,7 @@ if (isset($_POST["submit"])) {
     unset($_SESSION["student_data"]); // Clear session data after inserting into the database
 }
 
-function Verification($email, $register_number, $name, $verification_code)
+function Verification($email, $register_number, $name)
 {
     $mail = new PHPMailer(true);
 
@@ -160,7 +160,7 @@ function Verification($email, $register_number, $name, $verification_code)
                     <div class="content">
                         <p>Dear ' . $name . ',</p>
                         <p>Welcome to SRKR Engineering College! To complete your registration, please click the button below to verify your email address:</p>
-                        <a href="http://srkr.me/Student/verify.php?email=' . encryptEmail($email) . '" class="button">Verify Email</a>
+                        <a href="http://srkr.me/Student/verify.php?id=' . encryptEmail($email) . '" class="button">Verify Email</a>
                         <p style="margin-top: 20px;">Your Register Number: ' . $register_number . '</p>
                     </div>
                     <div class="footer">

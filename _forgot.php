@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_email'])) {
 
     $result = mysqli_query($conn, $sql);
 
+    // check if the person account is like email is verified or not like is_verified is 1 then  pass the error message like for the nofictioan message 
+
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
         $stored_email = $row['email']; // Fetch the stored email from the database
@@ -201,6 +203,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
         top: 12px;
         cursor: pointer;
     }
+
+     /* Notification styles */
+     .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideInRight 0.5s ease-in-out, fadeOut 0.5s ease-in-out 5s forwards;
+            z-index: 9999;
+            max-width: 300px; /* Limiting width for responsiveness */
+        }
+
+        /* Animation keyframes */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
 </style>
 </head>
 <body>
@@ -208,6 +244,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
 <?php include '_nav.php'; ?>
     <main>
         <div class="background-image">
+
+
+
+
         <div class="container">
             <h2>Forgot Password</h2>
             <div id="step1">
@@ -248,6 +288,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
                 </form>
             </div>
         </div>
+
+        <?php if (isset($)): ?>
+                <div class="notification-container">
+                    <p><?php echo $verificationMessage; ?></p>
+                </div>
+            <?php endif; ?>
     </div>
     
         <div class="body-content">

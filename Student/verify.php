@@ -1,12 +1,13 @@
+
 <?php
 include '../_dbconnect.php';
 
 session_start();
 
 // Check if email parameter exists in the URL
-if(isset($_GET['email'])) {
+if(isset($_GET['id'])) {
     // Decrypt the email parameter
-    $encrypted_email = $_GET['email'];
+    $encrypted_email = $_GET['id'];
     $email = base64_decode($encrypted_email);
 
     // Check if the decrypted email exists in the student_tb table
@@ -45,14 +46,15 @@ if(isset($_GET['email'])) {
                 // Display the form to change the password
                 ?>
 
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Change Password</title>
-                        <style>
-                            body {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/t1.css">
+    <style>
+          body {
                                 margin: 0;
                                 padding: 0;
                                 display: flex;
@@ -102,26 +104,36 @@ if(isset($_GET['email'])) {
                             input[type="submit"]:hover {
                                 background-color: #0056b3;
                             }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h2>Change Password</h2>
-                            <p>Welcome, <?php echo $name; ?>!</p>
-                            <form action="" method="post">
-                                <label for="password">New Password:</label>
-                                <input type="password" id="password" name="password" required>
-                                <label for="confirm_password">Confirm Password:</label>
-                                <input type="password" id="confirm_password" name="confirm_password" required>
-                                <input type="hidden" name="email" value="<?php echo $email; ?>">
-                                <input type="submit" name="change_password" value="Change Password">
-                            </form>
-                        </div>
-                    </body>
-                    </html>
+    </style>
+</head>
+<body>
+    <?php include '_nav.php'; ?>
+    <main>
+        <div class="background-image">
+            <div class="container">
+                    <h2>Change Password</h2>
+                    <p>Welcome, <?php echo $name; ?>!</p>
+                    <form action="" method="post">
+                        <label for="password">New Password:</label>
+                        <input type="password" id="password" name="password" required>
+                        <label for="confirm_password">Confirm Password:</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                        <input type="hidden" name="email" value="<?php echo $email; ?>">
+                        <input type="submit" name="change_password" value="Change Password">
+                    </form>
+                </div>
+           
+        </div>
 
+        <div class="body-content">
+        </div>
+    </main>
 
-                <?php
+    <?php include '_footer.php'; ?>
+</body>
+</html>
+
+<?php
             }
         }
     } else {
@@ -131,3 +143,8 @@ if(isset($_GET['email'])) {
     echo "Email parameter not provided.";
 }
 ?>
+
+
+
+
+
