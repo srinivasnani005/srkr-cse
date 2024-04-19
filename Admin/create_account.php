@@ -2,42 +2,23 @@
 $activeSection = 'createaccount';
 include '../_dbconnect.php';
 
-
-
 session_start();
-$count=0;
-
-
-
-
+$count = 0;
 
 require 'PHPMailer/PHPMailer.php';
-require 'PHPMailer/SMTP.php';   
-require 'PHPMailer/Exception.php';  
+require 'PHPMailer/SMTP.php';
+require 'PHPMailer/Exception.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
-
-
-
-
-function validateEmail($email, $client)
-{
-    try {
-        // Set up Gmail service
-        $client->setAccessToken($_SESSION['access_token']);
-        $gmail = new Gmail($client);
-
-        // Check if the email exists in the user's Gmail account
-        $messages = $gmail->users_messages->listUsersMessages('me', ['q' => 'to:' . $email]);
-        return count($messages) > 0;
-    } catch (Exception $e) {
-        echo '<script>alert("Error validating email: ' . $e->getMessage() . '");</script>';
-        return false;
-    }
+// Function to encrypt the email
+function encryptEmail($email) {
+    // You can use any encryption algorithm here
+    // For example, using base64 encoding
+    return base64_encode($email);
 }
-
-
-
 
 // Check if user is not logged in
 if (!isset($_SESSION["username"])) {
@@ -45,12 +26,10 @@ if (!isset($_SESSION["username"])) {
     exit();
 }
 
-
 if ($_SESSION["user_type"] != "admin") {
     header("Location: ../");
     exit();
 }
-
 
 // Logout logic
 if (isset($_POST["logout"])) {
@@ -59,23 +38,15 @@ if (isset($_POST["logout"])) {
     exit();
 }
 
-$servername = "localhost";
-$username = "root"; 
-$password = ""; 
-$dbname = "ncu";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-function generateVerificationCode() {
-    return bin2hex(random_bytes(25)); 
+function generateVerificationCode()
+{
+    return bin2hex(random_bytes(25));
 }
 
 $verification_code = generateVerificationCode();
 
-if(isset($_POST["submit"])) {
+if (isset($_POST["submit"])) {
 
     $stmt = $conn->prepare("INSERT INTO student_tb (Name, Register_Number, Email, Password, Year, Branch, Section, verification_code, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE)");
     $stmt->bind_param("ssssssss", $name, $register_number, $email, $password, $year, $branch, $section, $verification_code);
@@ -89,52 +60,40 @@ if(isset($_POST["submit"])) {
         $year = isset($student['year']) ? $student['year'] : ''; // Check if year exists
         $branch = isset($student['branch']) ? $student['branch'] : ''; // Check if branch exists
         $section = isset($student['section']) ? $student['section'] : ''; // Check if section exists
-        
+
         // Check if required fields are not empty before insertion
         if (!empty($name) && !empty($register_number) && !empty($email) && !empty($year) && !empty($branch) && !empty($section)) {
 
             Verification($email, $register_number, $name, $verification_code);
             $stmt->execute();
-
         }
     }
 
-    $count=2;
-    echo '<script>alert("Verification emails have been successfully sent to ' . $count .' students.");</script>';
+    $count = 2;
+    echo '<script>alert("Verification emails have been successfully sent to ' . $count . ' students.");</script>';
 
-    
+
     $stmt->close();
     unset($_SESSION["student_data"]); // Clear session data after inserting into the database
 }
 
-
-
-    
-
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-function Verification($email, $register_number, $name, ){
-
-
+function Verification($email, $register_number, $name, $verification_code)
+{
     $mail = new PHPMailer(true);
 
     try {
-
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;                      // Disable verbose debug output
-        $mail->isSMTP();                                          // Set mailer to use SMTP
-        $mail->Host       = 'smtp.gmail.com';                    // Specify main and backup SMTP servers
-        $mail->SMTPAuth   = true;                                 // Enable SMTP authentication
-        $mail->Username   = 'srinivasnani005@gmail.com';               // SMTP username (replace with your Gmail email)
-        $mail->Password   = 'flkv lvmw pavy edsc';                      // SMTP password (replace with your Gmail password)
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;       // Enable TLS encryption, `ssl` also accepted
-        $mail->Port       = 587;                     // TCP port to connect to
+        $mail->SMTPDebug = SMTP::DEBUG_OFF; // Disable verbose debug output
+        $mail->isSMTP(); // Set mailer to use SMTP
+        $mail->Host       = 'smtp.gmail.com'; // Specify main and backup SMTP servers
+        $mail->SMTPAuth   = true; // Enable SMTP authentication
+        $mail->Username   = 'srinivasnani005@gmail.com'; // SMTP username (replace with your Gmail email)
+        $mail->Password   = 'flkv lvmw pavy edsc'; // SMTP password (replace with your Gmail password)
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption, `ssl` also accepted
+        $mail->Port       = 587; // TCP port to connect to
 
         //Recipients
         $mail->setFrom('srinivasnani005@gmail.com', 'Srinivas Nani');
-        $mail->addAddress($email, $name);     
+        $mail->addAddress($email, $name);
 
         // Content
         $mail->isHTML(true); // Set email format to HTML
@@ -142,7 +101,8 @@ function Verification($email, $register_number, $name, ){
 
         // Email body
         $mail->Body = '
-            <html>            <head>
+            <html>
+            <head>
                 <style>
                     /* Global styles */
                     body {
@@ -200,7 +160,7 @@ function Verification($email, $register_number, $name, ){
                     <div class="content">
                         <p>Dear ' . $name . ',</p>
                         <p>Welcome to SRKR Engineering College! To complete your registration, please click the button below to verify your email address:</p>
-                        <a href="http://srkr.me/_verify.php/<?php echo $verification_code; ?>" class="button">Verify Email</a>
+                        <a href="http://srkr.me/Student/verify.php?email=' . encryptEmail($email) . '" class="button">Verify Email</a>
                         <p style="margin-top: 20px;">Your Register Number: ' . $register_number . '</p>
                     </div>
                     <div class="footer">
@@ -218,13 +178,8 @@ function Verification($email, $register_number, $name, ){
     } catch (Exception $e) {
         echo '<script>alert("Verification Emails are not sent to Register Number ' . $register_number . '");</script>'; // Display popup message if email sending fails
     }
-    
 }
-
-
-
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -234,7 +189,7 @@ function Verification($email, $register_number, $name, ){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="../css/temp.css">
@@ -243,23 +198,23 @@ function Verification($email, $register_number, $name, ){
     <script src="../js/script.js" defer></script>
     <title>Dashboard</title>
     <style>
-         .container {
+        .container {
             max-width: 100%;
             padding: 20px;
-            background-color: #fff; /* White container background */
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
-            position: relative; /* Positioning context for absolute positioning */
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #4caf50; /* Green color */
+            background-color: #4caf50;
             color: #fff;
             padding: 10px 20px;
-            border-radius: 10px 10px 0 0; /* Rounded corners, top only */
+            border-radius: 10px 10px 0 0;
         }
 
         .header h2 {
@@ -277,7 +232,7 @@ function Verification($email, $register_number, $name, ){
         }
 
         .logout-btn:hover {
-            background-color: #f2f2f2; /* Lighter background on hover */
+            background-color: #f2f2f2;
         }
 
         .body {
@@ -289,7 +244,8 @@ function Verification($email, $register_number, $name, ){
             border-collapse: collapse;
         }
 
-        table th, table td {
+        table th,
+        table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
@@ -308,19 +264,17 @@ function Verification($email, $register_number, $name, ){
         .label {
             margin-right: 10px;
             font-weight: bold;
-            width: 60px; /* Fixed width for labels */
+            width: 60px;
         }
 
         .upload-input {
             padding: 6px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 100px; 
-            margin-right: 10px; 
-            font-size: 12px; 
+            width: 100px;
+            margin-right: 10px;
+            font-size: 12px;
         }
-
-
 
         .upload-input[type="file"] {
             padding: 6px;
@@ -332,11 +286,11 @@ function Verification($email, $register_number, $name, ){
         }
 
         .upload-input:last-child {
-            margin-right: 0; /* Remove margin for the last select option */
+            margin-right: 0;
         }
 
         .upload-btn {
-            background-color: #4caf50; /* Green color */
+            background-color: #4caf50;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -346,16 +300,16 @@ function Verification($email, $register_number, $name, ){
         }
 
         .upload-btn:hover {
-            background-color: #388e3c; /* Darker shade of green on hover */
+            background-color: #388e3c;
         }
 
         .footer {
-            text-align: right; /* Align the button to the right */
+            text-align: right;
             margin-top: 20px;
         }
 
         .submit-btn {
-            background-color: #4caf50; /* Green color */
+            background-color: #4caf50;
             color: #fff;
             border: none;
             padding: 8px 16px;
@@ -365,17 +319,16 @@ function Verification($email, $register_number, $name, ){
         }
 
         .submit-btn:hover {
-            background-color: #388e3c; /* Darker shade of green on hover */
+            background-color: #388e3c;
         }
 
-        /* Additional CSS to position the button above the table */
         .button-group {
             margin-bottom: 20px;
             text-align: right;
         }
 
     </style>
-   
+
 </head>
 
 <body>
@@ -385,34 +338,34 @@ function Verification($email, $register_number, $name, ){
 
     <main>
 
-    <div class="container">
-        <div class="body">
-            <h2>Upload Excel File</h2>
-            <!-- Select options -->
-            <form action="" method="post" enctype="multipart/form-data"> 
-                <div class="upload-form">
-                    <label class="label" for="year">Year:</label>
-                    <select class="upload-input" id="year" name="year">
-                        <?php
-                        $currentYear = date("Y");
-                        for ($i = $currentYear; $i >= $currentYear - 4; $i--) {
-                            echo '<option value="' . $i . '">' . $i . '</option>';
-                        }
-                        ?>
-                    </select>
+        <div class="container">
+            <div class="body">
+                <h2>Upload Excel File</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="upload-form">
+                        <label class="label" for="year">Year:</label>
+                        <select class="upload-input" id="year" name="year">
+                            <?php
+                            $currentYear = date("Y");
+                            for ($i = $currentYear; $i >= $currentYear - 4; $i--) {
+                                echo '<option value="' . $i . '">' . $i . '</option>';
+                            }
+                            ?>
+                        </select>
 
-                    <label class="label" for="branch">Branch:</label>
-                    <select class="upload-input" id="branch" name="branch">
-                        <?php
-                        $branches = array("CSE", "ECE", "EEE", "CIVIL", "AIDS", "CSD", "MECH");
-                        foreach ($branches as $branch) {
-                            echo '<option value="' . $branch . '">' . $branch . '</option>';
-                        }
-                        ?>
-                    </select>
+                        <label class="label" for="branch">Branch:</label>
+                        <select class="upload-input" id="branch" name="branch">
+                            <?php
+                            $branches = array("CSE", "ECE", "EEE", "CIVIL", "AIDS", "CSD", "MECH");
+                            foreach ($branches as $branch) {
+                                echo '<option value="' . $branch . '">' . $branch . '</option>';
+                            }
+                            ?>
+                        </select>
 
-                    <label class="label" for="section">Section:</label>
-                    <select class="upload-input" id="section" name="section">
+                        <label class="label" for="section">Section:</label>
+                        <select class="upload-input" id="section" name="section">
+
                         <?php
                         $sections = array("A", "B", "C", "D", "E");
                         foreach ($sections as $section) {
