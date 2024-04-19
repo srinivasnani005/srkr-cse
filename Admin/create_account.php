@@ -2,11 +2,23 @@
 $activeSection = 'createaccount';
 include '../_dbconnect.php';
 
+
+
+session_start();
 $count=0;
+
+
+
+
 
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';   
 require 'PHPMailer/Exception.php';  
+
+
+
+
+
 
 function validateEmail($email, $client)
 {
@@ -25,26 +37,37 @@ function validateEmail($email, $client)
 }
 
 
+
+
 // Check if user is not logged in
-// if (!isset($_SESSION["username"])) {
-//     header("Location: ../"); // Redirect to login page
-//     exit();
-// }
+if (!isset($_SESSION["username"])) {
+    header("Location: ../"); // Redirect to login page
+    exit();
+}
 
 
-// if ($_SESSION["user_type"] != "admin") {
-//     header("Location: ../");
-//     exit();
-// }
+if ($_SESSION["user_type"] != "admin") {
+    header("Location: ../");
+    exit();
+}
 
 
-// // Logout logic
-// if (isset($_POST["logout"])) {
-//     session_destroy(); // Destroy all session data
-//     header("Location: ../"); // Redirect to login page after logout
-//     exit();
-// }
+// Logout logic
+if (isset($_POST["logout"])) {
+    session_destroy(); // Destroy all session data
+    header("Location: ../"); // Redirect to login page after logout
+    exit();
+}
 
+$servername = "localhost";
+$username = "root"; 
+$password = ""; 
+$dbname = "ncu";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 function generateVerificationCode() {
     return bin2hex(random_bytes(25)); 
@@ -177,7 +200,7 @@ function Verification($email, $register_number, $name, ){
                     <div class="content">
                         <p>Dear ' . $name . ',</p>
                         <p>Welcome to SRKR Engineering College! To complete your registration, please click the button below to verify your email address:</p>
-                        <a href="http://example.com/verify.php?email=' . $email . '" class="button">Verify Email</a>
+                        <a href="http://srkr.me/_verify.php/<?php echo $verification_code; ?>" class="button">Verify Email</a>
                         <p style="margin-top: 20px;">Your Register Number: ' . $register_number . '</p>
                     </div>
                     <div class="footer">
@@ -220,7 +243,7 @@ function Verification($email, $register_number, $name, ){
     <script src="../js/script.js" defer></script>
     <title>Dashboard</title>
     <style>
-        .container {
+         .container {
             max-width: 100%;
             padding: 20px;
             background-color: #fff; /* White container background */
@@ -350,7 +373,9 @@ function Verification($email, $register_number, $name, ){
             margin-bottom: 20px;
             text-align: right;
         }
+
     </style>
+   
 </head>
 
 <body>
@@ -358,122 +383,140 @@ function Verification($email, $register_number, $name, ){
     <?php include '_side.php'; ?>
     <?php include '_nav.php'; ?>
 
-    <!-- Main Content -->
     <main>
 
+    <div class="container">
+        <div class="body">
+            <h2>Upload Excel File</h2>
+            <!-- Select options -->
+            <form action="" method="post" enctype="multipart/form-data"> 
+                <div class="upload-form">
+                    <label class="label" for="year">Year:</label>
+                    <select class="upload-input" id="year" name="year">
+                        <?php
+                        $currentYear = date("Y");
+                        for ($i = $currentYear; $i >= $currentYear - 4; $i--) {
+                            echo '<option value="' . $i . '">' . $i . '</option>';
+                        }
+                        ?>
+                    </select>
 
+                    <label class="label" for="branch">Branch:</label>
+                    <select class="upload-input" id="branch" name="branch">
+                        <?php
+                        $branches = array("CSE", "ECE", "EEE", "CIVIL", "AIDS", "CSD", "MECH");
+                        foreach ($branches as $branch) {
+                            echo '<option value="' . $branch . '">' . $branch . '</option>';
+                        }
+                        ?>
+                    </select>
 
+                    <label class="label" for="section">Section:</label>
+                    <select class="upload-input" id="section" name="section">
+                        <?php
+                        $sections = array("A", "B", "C", "D", "E");
+                        foreach ($sections as $section) {
+                            echo '<option value="' . $section . '">' . $section . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
 
-
-    
-    <div class="upload-account-container">
-
-    <h2>Upload Excel File</h2>
-    <form action="" method="post" enctype="multipart/form-data" class="upload-form"> 
-        <div class="upload-form-fields">
-            <label class="upload-label" for="upload-year">Year:</label>
-            <select class="upload-select" id="upload-year" name="year">
-                <?php
-                $currentYear = date("Y");
-                for ($i = $currentYear; $i >= $currentYear - 3; $i--) {
-                    echo '<option value="' . $i . '">' . $i . '</option>';
-                }
-                ?>
-            </select>
-
-            <label class="upload-label" for="upload-branch">Branch:</label>
-            <select class="upload-select" id="upload-branch" name="branch">
-                <?php
-                $branches = array("CSE", "ECE", "EEE", "CIVIL", "AIDS", "CSD", "MECH","AIML");
-                foreach ($branches as $branch) {
-                    echo '<option value="' . $branch . '">' . $branch . '</option>';
-                }
-                ?>
-            </select>
-
-            <label class="upload-label" for="upload-section">Section:</label>
-            <select class="upload-select" id="upload-section" name="section">
-                <?php
-                $sections = array("A", "B", "C", "D", "E");
-                foreach ($sections as $section) {
-                    echo '<option value="' . $section . '">' . $section . '</option>';
-                }
-                ?>
-            </select>
-        
-
-        <div class="choose-check">
-            <input class="upload-file" type="file" name="excel" required>
-            <button class="upload-button" type="submit" onclick="create_account()">Check</button>
-
-        </div>
-        </div>
-    </form>
-    <hr>
-    <?php
-    if(isset($_FILES["excel"]["name"])){
-
-
-        require 'composer/excel_reader2.php';
-        require 'composer/SpreadsheetReader.php';
-
-        $fileName = $_FILES["excel"]["name"];
-        $targetDirectory = "uploads/" . $fileName;
-        move_uploaded_file($_FILES['excel']['tmp_name'], $targetDirectory);
-
-        $reader = new SpreadsheetReader($targetDirectory);
-        $_SESSION["student_data"] = [];
-
-        foreach ($reader as $row) {
-            $name = isset($row[0]) ? $conn->real_escape_string($row[0]) : '';
-            $register_number = isset($row[1]) ? $conn->real_escape_string($row[1]) : '';
-            $email = isset($row[2]) ? $conn->real_escape_string($row[2]) : '';
-            $year = $_POST['year'];
-            $branch = $_POST['branch'];
-            $section = $_POST['section'];
-
-            $_SESSION["student_data"][] = array(
-                'name' => $name,
-                'register_number' => $register_number,
-                'email' => $email,
-                'year' => $year,
-                'branch' => $branch,
-                'section' => $section
-            );
-        }
-    ?>
-    <h2>Uploaded File Data</h2>
-    <div class="uploaded-data-container">
-        <table class="uploaded-data-table">
-            <tr>
-                <th>Name</th>
-                <th>Register Number</th>
-                <th>Email</th>
-                <th>Year</th>
-                <th>Branch</th>
-                <th>Section</th>
-            </tr>
+                <!-- File upload -->
+                <input class="upload-input" type="file" name="excel" required>
+                <button class="upload-btn" type="submit">Check</button> <!-- Changed name="import" to name="submit" -->
+            </form>
+            <hr>
             <?php
-            foreach ($_SESSION["student_data"] as $student) {
+            if(isset($_FILES["excel"]["name"])){
+                // Display the uploaded file data in a table format
+                require 'composer/excel_reader2.php';
+                require 'composer/SpreadsheetReader.php';
+
+                $fileName = $_FILES["excel"]["name"];
+                $targetDirectory = "uploads/" . $fileName;
+                move_uploaded_file($_FILES['excel']['tmp_name'], $targetDirectory);
+
+                $reader = new SpreadsheetReader($targetDirectory);
+                $_SESSION["student_data"] = [];
+
+                foreach ($reader as $row) {
+                    $name = isset($row[0]) ? $conn->real_escape_string($row[0]) : '';
+                    $register_number = isset($row[1]) ? $conn->real_escape_string($row[1]) : '';
+                    $email = isset($row[2]) ? $conn->real_escape_string($row[2]) : ''; // Assuming email is fetched from the excel data
+                    $year = $_POST['year']; // Use selected year
+                    $branch = $_POST['branch']; // Use selected branch
+                    $section = $_POST['section']; // Use selected section
+
+                    $_SESSION["student_data"][] = array(
+                        'name' => $name,
+                        'register_number' => $register_number,
+                        'email' => $email,
+                        'year' => $year,
+                        'branch' => $branch,
+                        'section' => $section
+                    );
+                }
             ?>
-            <tr>
-                <td><?php echo $student['name']; ?></td>
-                <td><?php echo $student['register_number']; ?></td>
-                <td><?php echo $student['email']; ?></td>
-                <td><?php echo $student['year']; ?></td>
-                <td><?php echo $student['branch']; ?></td>
-                <td><?php echo $student['section']; ?></td>
-            </tr>
+            <h2>Uploaded File Data</h2>
+            <div style="overflow-x:auto;">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Register Number</th>
+                        <th>Email</th>
+                        <th>Year</th>
+                        <th>Branch</th>
+                        <th>Section</th>
+                    </tr>
+                    <?php
+                    foreach ($_SESSION["student_data"] as $student) {
+                        $count+=1;
+                    ?>
+                    <tr>
+                        <td><?php echo $student['name']; ?></td>
+                        <td><?php echo $student['register_number']; ?></td>
+                        <td><?php echo $student['email']; ?></td>
+                        <td><?php echo $student['year']; ?></td>
+                        <td><?php echo $student['branch']; ?></td>
+                        <td><?php echo $student['section']; ?></td>
+                    </tr>
+                    <?php } ?>
+                </table>
+            </div>
+
+            <!-- Display submit button after checking -->
+            <div class="button-group">
+                <form action="" method="post">
+                    <button class="submit-btn" type="submit" name="submit">Submit</button>
+                </form>
+            </div>
             <?php } ?>
-        </table>
-    </div>
-    <div class="submit-button-container">
-        <form action="" method="post">
-            <button class="submit-button" type="submit" name="submit">Submit</button>
-        </form>
-    </div>
-    <?php } ?>
-    <div id="successMessage" style="display: none; color: green; margin-top: 10px;">Data submitted successfully.</div>
+
+            <div id="successMessage" style="display: none; color: green; margin-top: 10px;">Data submitted successfully.</div>
+
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+            <!-- Footer content, if any -->
+        </div>
+
+        <script>
+            // Function to show success message and hide after specified duration
+            function showSuccessMessage() {
+                var successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+
+            // Event listener for form submission
+            document.getElementById('submitForm').addEventListener('submit', function(event) {
+                // Show success message
+                showSuccessMessage();
+            });
+        </script>
     </div>
 
 
