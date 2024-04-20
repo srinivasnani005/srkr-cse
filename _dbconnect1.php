@@ -1,16 +1,15 @@
 <?php
 
-    session_start();
     
-    // $servername = "sql6.freesqldatabase.com";
-    // $username = "sql6700121";
-    // $password = "Ri5k55LMWk";
-    // $dbname = "sql6700121";
+    $servername = "sql6.freesqldatabase.com";
+    $username = "sql6700121";
+    $password = "Ri5k55LMWk";
+    $dbname = "sql6700121";
 
-    $servername = 'localhost';
-    $username = 'root';
-    $password = "";
-    $dbname = "ncu";
+    // $servername = 'localhost';
+    // $username = 'root';
+    // $password = "";
+    // $dbname = "ncu";
 
 
     // $servername = 'monorail.proxy.rlwy.net';

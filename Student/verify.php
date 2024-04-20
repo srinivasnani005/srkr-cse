@@ -1,7 +1,6 @@
-
 <?php
-include '../_dbconnect.php';
 
+include '../_dbconnect1.php';
 
 // Check if email parameter exists in the URL
 if(isset($_GET['id'])) {
@@ -128,7 +127,7 @@ if(isset($_GET['id'])) {
         </div>
     </main>
 
-    <?php include '_footer.php'; ?>
+    <?php include '../_footer.php'; ?>
 </body>
 </html>
 
@@ -142,8 +141,3 @@ if(isset($_GET['id'])) {
     echo "Email parameter not provided.";
 }
 ?>
-
-
-
-
-
