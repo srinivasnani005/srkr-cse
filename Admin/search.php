@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="profile-container" >
             <div class="profile-part1">
                 <div class="profile-part1-pic">
-                    <img src="logo.png" alt="Profile Picture">
+                    <img src="nani.jpg" alt="Profile Picture">
                 </div>
 
                 <div class="profile-part1-details">

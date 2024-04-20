@@ -2,6 +2,15 @@
 $activeSection = 'search';
 include '../_dbconnect.php';
 
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+
+}
+
+
 $searchvalue = $_GET['search'];
 
 $sql = "SELECT * FROM student_tb WHERE Register_Number = '$searchvalue'";
@@ -68,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="profile-container" >
             <div class="profile-part1">
                 <div class="profile-part1-pic">
-                    <img src="logo.png" alt="Profile Picture">
+                <img src="nani.jpg" alt="Profile Picture">
                 </div>
 
                 <div class="profile-part1-details">
@@ -153,12 +162,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div id="profile-step3" class="profile-content">
                     <h2>Achievements</h2>
-                    <p>This is the content for Step 3.</p>
+                    <p>This is the content </p>
                 </div>
 
                 <div id="profile-step4" class="profile-content">
                     <h2>Step 4 Content</h2>
-                    <p>This is the content for Step 4.</p>
+                    <p>This is the content </p>
                 </div>
             </div>
 
@@ -174,11 +183,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label for="name">Name:</label>
                             <input type="text" id="name" name="name" value="<?php echo $user_data["Name"]; ?>">
 
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" value="<?php echo $user_data["Email"]; ?>">
+                            <!-- <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="<?php echo $user_data["Email"]; ?>"> -->
 
-                            <label for="phone">Phone Number:</label>
-                            <input type="text" id="phone" name="phone" value="<?php echo $user_data["Phone_Number"]; ?>">
+                            <!-- <label for="phone">Phone Number:</label>
+                            <input type="text" id="phone" name="phone" value="<?php echo $user_data["Phone_Number"]; ?>"> -->
 
                             <label for="father">Father Name:</label>
                             <input type="text" id="father" name="father" value="<?php echo $user_data["Father_Name"]; ?>">

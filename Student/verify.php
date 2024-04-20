@@ -2,7 +2,6 @@
 <?php
 include '../_dbconnect.php';
 
-session_start();
 
 // Check if email parameter exists in the URL
 if(isset($_GET['id'])) {
