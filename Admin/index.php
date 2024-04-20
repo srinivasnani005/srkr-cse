@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $loginSuccess = true;
         $_SESSION["username"] = $enteredUsername;
-        $_SESSION["user_type"] = 'admin';
+        $_SESSION["user_type"] = $enteredUsername;
         header("Location: dashboard.php");
         exit();
     }

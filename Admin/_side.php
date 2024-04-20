@@ -12,7 +12,7 @@
         <?php 
         if(isset($_SESSION['username'])) {
             // change the text to uppercase
-            $username = $_SESSION['username'];
+            $username = $_SESSION['user_type'];
             echo strtoupper($username);
         } else {
             echo "ADMIN";
@@ -38,7 +38,7 @@
         <li><a href="folder.php" class="body-link <?php echo ($activeSection === 'Folder') ? 'active' : ''; ?>" id="load_content_btn" data-section="Folder"><i class='bx bxs-widget icon' ></i>Folders</a></li>
         <li class="divider" data-text="study and forms"></li>
         <!-- <li><a href="#" class="body-link" data-section="yourcertificates"><i class='bx bx-table icon' ></i>Your Certificates</a></li> -->
-        <li>
+        <!-- <li>
             <a href="#"><i class='bx bxs-notepad icon' ></i> Fields <i class='bx bx-chevron-right icon-right' ></i></a>
             <ul class="side-dropdown">
                 <li><a href="#">F1</a></li>
@@ -56,6 +56,6 @@
                 <li><a href="#">S5</a></li>
                 <li><a href="#">S6</a></li>
             </ul>
-        </li>
+        </li> -->
     </ul>
 </section>
