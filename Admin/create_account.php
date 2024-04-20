@@ -2,7 +2,6 @@
 $activeSection = 'createaccount';
 include '../_dbconnect.php';
 
-session_start();
 $count = 0;
 
 require 'PHPMailer/PHPMailer.php';
@@ -18,24 +17,6 @@ function encryptEmail($email) {
     // You can use any encryption algorithm here
     // For example, using base64 encoding
     return base64_encode($email);
-}
-
-// Check if user is not logged in
-if (!isset($_SESSION["username"])) {
-    header("Location: ../"); // Redirect to login page
-    exit();
-}
-
-if ($_SESSION["user_type"] != "admin") {
-    header("Location: ../");
-    exit();
-}
-
-// Logout logic
-if (isset($_POST["logout"])) {
-    session_destroy(); // Destroy all session data
-    header("Location: ../"); // Redirect to login page after logout
-    exit();
 }
 
 

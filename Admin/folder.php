@@ -2,8 +2,6 @@
 $activeSection = 'Folder';
 include '../_dbconnect.php';
 
-
-
 // This PHP script handles the folder selection and initiates a download process for the selected folder.
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['downloadFolder'])) {
     $folderName = $_POST['downloadFolder'];
@@ -64,10 +62,11 @@ function getFolders($dir) {
     <style>
        
        .unique-folder-container {
-           text-align:left;
-           margin-top: 20px;
-           display: flex;
-           flex-direction: row;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+              margin-top: 50px;
+
        }
 
        .unique-folder-btn {
@@ -116,21 +115,22 @@ function getFolders($dir) {
     <main>
 
             
-        <div class="unique-folder-container">
-            <?php
-            // Assuming the getFolders function is defined elsewhere in your script.
-            $folders = getFolders('uploads/');
-            foreach ($folders as $folder) {
-                echo "<form action='folder.php' method='post'>";
-                echo "<input type='hidden' name='downloadFolder' value='$folder'>";
-                echo "<button type='submit' class='unique-folder-btn'>$folder</button>";
 
-                echo "</form>";
-            }
-            ?>
-        </div>
+    <div class="unique-folder-container">
+        <?php
+        // Assuming the getFolders function is defined elsewhere in your script.
+        $folders = getFolders('../Student/uploads');
+        foreach ($folders as $folder) {
+            echo "<form action='folder.php' method='post'>";
+            echo "<input type='hidden' name='downloadFolder' value='$folder'>";
+            echo "<button type='submit' class='unique-folder-btn'>$folder</button>";
 
-        Currently folders are not available please check back later.
+
+
+            echo "</form>";
+        }
+        ?>
+    </div>
 
 
             

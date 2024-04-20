@@ -1,8 +1,7 @@
 RewriteEngine On
+RewriteBase /srkrcse/srkr-cse/
 
-# Redirect requests to Admin/admin.php if the secret key is provided
-RewriteCond %{QUERY_STRING} ^key=SRKRCSE$
-RewriteRule ^Admin/admin\.php$ - [L]
-
-# Redirect all other requests to srkr.me
-RewriteRule ^Admin/admin\.php$ https://srkr.me [R=301,L]
+# Rewrite rule for accessing admin.php with ID parameter
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ Admin/admin.php?id=$1 [L,QSA]

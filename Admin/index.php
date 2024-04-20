@@ -1,76 +1,213 @@
 <?php
 session_start();
 
+$var = isset($_SESSION['var']) ? $_SESSION['var'] : false;
 
-if (!isset($_SESSION["username"])) {
-    header("Location: ../"); 
-    exit();
-}
-
-
-if ($_SESSION["user_type"] != "admin") {
+if (substr($_SERVER['REQUEST_URI'], -7) === "/Admin/" || !$var) {
     header("Location: ../");
     exit();
 }
 
-if (isset($_GET['logout'])) {
-    $_SESSION = array();
-    session_destroy();
-    header("Location: ../");
-    exit();
+$loginSuccess = false;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Replace these with your actual database connection details
+    $servername = "localhost";
+    $username = "root";
+    $password = ""; // Assuming no password
+    $dbname = "ncu"; // Database name
+    $tablename = "admin_tb"; // Table name
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Get username and password from form
+    $enteredUsername = $_POST["username"];
+    $enteredPassword = $_POST["password"];
+
+    // Prepare SQL statement to check if user exists with the provided credentials
+    $sql = "SELECT * FROM $tablename WHERE username='$enteredUsername' AND password='$enteredPassword'";
+    $result = $conn->query($sql);
+
+    // If user exists, set loginSuccess to true and store username in session
+    if ($result->num_rows > 0) {
+        $loginSuccess = true;
+        $_SESSION["username"] = $enteredUsername;
+        $_SESSION["user_type"] = 'admin';
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    $conn->close();
 }
-
-
-
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="../js/script.js" defer></script>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/always-grey.png'); /* Background texture */
+            animation: backgroundAnimate 10s infinite linear;
+        }
+
+        @keyframes backgroundAnimate {
+            from { background-position: 0 0; }
+            to { background-position: 100px 75px; }
+        }
+
+        .login-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: scale(1.05);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px #4CAF50;
+            transform: scale(1.02);
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: calc(100% - 20px);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        input[type="submit"]:active {
+            background-color: #3e8e41;
+            transform: scale(0.95);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .error-message.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+
+        /* Additional animations */
+        .animated-text {
+            font-size: 20px;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .animated-text.visible {
+            opacity: 1;
+        }
+
+        /* Additional animation for success message */
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .success-message.visible {
+            opacity: 1;
+        }
+
+
+
+        
+    </style>
 </head>
-
 <body>
+    <div class="login-container">
+        <?php if ($loginSuccess): ?>
+            <h2 class="animated-text visible">Welcome Back!</h2>
+            <p class="success-message visible">Login Successful!</p>
+        <?php else: ?>
+            <h2 class="animated-text">Welcome Admin!</h2>
+        <?php endif; ?>
+        <form id="login-form" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <br><br>
+            <input type="password" name="password" placeholder="Password" required>
+            <br><br>
+            <input type="submit" value="Login">
+            <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !$loginSuccess): ?>
+                <p class="error-message shake">Invalid username or password!</p>
+                <script>
+                    // Add JavaScript logic to remove shake animation and hide error message after 6 seconds
+                    var errorMessage = document.querySelector('.error-message');
+                    errorMessage.classList.add('shake');
+                    setTimeout(function() {
+                        errorMessage.classList.remove('shake');
+                        errorMessage.style.opacity = '0';
+                    }, 6000); // Hide the error message after 6 seconds
+                </script>
+            <?php endif; ?>
+        </form>
+    </div>
 
-    <?php include '_side.php'; ?>
-    <?php include '_nav.php'; ?>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Welcom message for Admin  -->
-        <p>
-            <?php
-            if (isset($_SESSION['username'])) {
-                $username = $_SESSION['username'];
-                echo "Welcome " . strtoupper($username);
-            } else {
-                echo "Welcome Admin";
-            }
-            ?>
-        </p>
-
-
-    </main>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <!-- Boxicons JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/boxicons.min.js" integrity="sha512-MQTKlzvw/bRfFm3WTrMjOsK6Aq7HgC5Uesx7Gz7StMhH/GiNAGnnukDJRUV8D2KtP8sPbQj+FLB4CHiYjOY+Bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Custom JS -->
-
-    </section>
+    <script>
+        // Additional JavaScript for animated text
+        window.onload = function() {
+            document.querySelector('.animated-text').classList.add('visible');
+            <?php if ($loginSuccess): ?>
+                document.querySelector('.success-message').classList.add('visible');
+            <?php endif; ?>
+        };
+    </script>
 </body>
-
 </html>
