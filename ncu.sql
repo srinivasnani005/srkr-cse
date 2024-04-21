@@ -578,3 +578,11 @@ ALTER TABLE `student_tb`
 ALTER TABLE `teacher_tb`
   MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
+
+ALTER TABLE student_tb
+ADD COLUMN `10th_gpa` DECIMAL(4, 2),
+ADD COLUMN `10th_school_name` VARCHAR(255),
+ADD COLUMN `inter_gpa` DECIMAL(4, 2),
+ADD COLUMN `inter_college_name` VARCHAR(255),
+ADD COLUMN `btech_cgpa` DECIMAL(4, 2);
+  

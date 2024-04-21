@@ -36,14 +36,11 @@ include '../_dbconnect.php';
                 </div>
                 <div class="dashboard-header-right">
                     <?php
-                    if(isset($_SESSION['Register_Number'])) {
-
-                        $registerNumber = $_SESSION['Register_Number'];
                         $totalCount = 0;
                         $individualCounts = array();
                         for ($i = 1; $i <= 14; $i++) {
-                            $table = 'S' . $i;
-                            $query = "SELECT COUNT(*) AS count FROM $table WHERE Register_Number = '$registerNumber'";
+                            $table = 's' . $i;
+                            $query = "SELECT COUNT(*) AS count FROM $table";
                             $result = mysqli_query($conn, $query);
                             if ($result) {
                                 $row = mysqli_fetch_assoc($result);
@@ -52,9 +49,6 @@ include '../_dbconnect.php';
                             }
                         }
                         echo "Total Count: " . $totalCount;
-                    } else {
-                        echo "Session variable Register_Number not set.";
-                    }
                     ?>
                 </div>
             </div>
@@ -63,74 +57,74 @@ include '../_dbconnect.php';
                 <?php
                 $categories = array(
                     array(
-                        'title' => 'S1 Student Publications',
+                        'title' => 's1 Student Publications',
                         'description' => 'This category includes publications by students. Explore the latest research and findings.',
-                        'table' => 'S1'
+                        'table' => 's1'
                     ),
                     array(
-                        'title' => 'S2 Student Conference Publications',
+                        'title' => 's2 Student Conference Publications',
                         'description' => 'Find conference publications by students, showcasing their academic contributions.',
-                        'table' => 'S2'
+                        'table' => 's2'
                     ),
                     array(
-                        'title' => 'S3 Student Internships',
+                        'title' => 's3 Student Internships',
                         'description' => 'Browse through the internships undertaken by students to gain practical experience.',
-                        'table' => 'S3'
+                        'table' => 's3'
                     ),
                     array(
-                        'title' => 'S4 Student Certificate Courses',
+                        'title' => 's4 Student Certificate Courses',
                         'description' => 'Explore the certificate courses completed by students to enhance their skills.',
-                        'table' => 'S4'
+                        'table' => 's4'
                     ),
                     array(
-                        'title' => 'S5 Student Workshops Participated',
+                        'title' => 's5 Student Workshops Participated',
                         'description' => 'Discover workshops participated in by students to broaden their knowledge.',
-                        'table' => 'S5'
+                        'table' => 's5'
                     ),
                     array(
-                        'title' => 'S6 Academic Events Organized by Students',
+                        'title' => 's6 Academic Events Organized by Students',
                         'description' => 'Find out about academic events organized by students, fostering learning and collaboration.',
-                        'table' => 'S6'
+                        'table' => 's6'
                     ),
                     array(
-                        'title' => 'S7 Student NPTEL Certifications',
+                        'title' => 's7 Student NPTEL Certifications',
                         'description' => 'View NPTEL certifications achieved by students, demonstrating their expertise in various subjects.',
-                        'table' => 'S7'
+                        'table' => 's7'
                     ),
                     array(
-                        'title' => 'S8 Student Professional Body Memberships',
+                        'title' => 's8 Student Professional Body Memberships',
                         'description' => 'Explore professional body memberships held by students, connecting them with industry professionals.',
-                        'table' => 'S8'
+                        'table' => 's8'
                     ),
                     array(
-                        'title' => 'S9 Student Participations and Awards/Prizes',
+                        'title' => 's9 Student Participations and Awards/Prizes',
                         'description' => 'Explore student participations and awards/prizes earned by students for their achievements.',
-                        'table' => 'S9'
+                        'table' => 's9'
                     ),
                     array(
-                        'title' => 'S10 Students Qualified in Competitive Exams',
+                        'title' => 's10 Students Qualified in Competitive Exams',
                         'description' => 'Find students who have qualified in competitive exams, demonstrating their academic excellence.',
-                        'table' => 'S10'
+                        'table' => 's10'
                     ),
                     array(
-                        'title' => 'S11 Student Industry Visits',
+                        'title' => 's11 Student Industry Visits',
                         'description' => 'Discover industry visits undertaken by students to gain practical insights into various sectors.',
-                        'table' => 'S11'
+                        'table' => 's11'
                     ),
                     array(
-                        'title' => 'S12 Student Outreach / Service programs participated',
+                        'title' => 's12 Student Outreach / Service programs participated',
                         'description' => 'Learn about outreach and service programs in which students have actively participated, contributing to society.',
-                        'table' => 'S12'
+                        'table' => 's12'
                     ),
                     array(
-                        'title' => 'S13 Student Higher Studies',
+                        'title' => 's13 Student Higher Studies',
                         'description' => 'Explore the higher studies pursued by students, including postgraduate and doctoral programs.',
-                        'table' => 'S13'
+                        'table' => 's13'
                     ),
                     array(
-                        'title' => 'S14 Student Projects',
+                        'title' => 's14 Student Projects',
                         'description' => 'Discover student projects spanning various fields, showcasing their creativity and innovation.',
-                        'table' => 'S14'
+                        'table' => 's14'
                     )
                 );
 

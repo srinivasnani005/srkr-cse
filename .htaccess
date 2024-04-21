@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /srkrcse/srkr-cse/
+RewriteBase /app/
 
 # Rewrite rule for accessing admin.php with ID parameter
 RewriteCond %{REQUEST_FILENAME} !-f

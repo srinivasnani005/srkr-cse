@@ -51,7 +51,7 @@ include '../_dbconnect.php';
                                 <th>Total Count</th>
                                 <?php
                                 for ($i = 1; $i <= 14; $i++) {
-                                    echo "<th>s{$i}</th>";
+                                    echo "<th>S{$i}</th>";
                                 }
                                 ?>
                             </tr>
@@ -75,7 +75,7 @@ include '../_dbconnect.php';
                                     echo "<td>{$total_count}</td>";
 
                                     for ($i = 1; $i <= 14; $i++) {
-                                        $table_name = "S" . $i;
+                                        $table_name = "s" . $i;
                                         $sql1 = "SELECT COUNT(*) as count FROM {$table_name} WHERE Register_Number = '{$eachcount['Register_Number']}'";
 
                                         $result1 = $conn->query($sql1);
