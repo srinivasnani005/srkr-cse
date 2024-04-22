@@ -94,7 +94,7 @@ include '../_dbconnect.php';
                             foreach ($row as $key => $value) {
                                 if ($key === 'certificate') {
                                     // If the column corresponds to the certificate file path, create a styled link to open the file
-                                    echo "<td><a href='{$value}' target='_blank' class='view-certificate-link'>View Certificate</a></td>";
+                                    echo "<td><a href='resume.pdf' target='_blank' class='view-certificate-link'>View Certificate</a></td>";
                                 } elseif ($key !== 'id') {
                                     echo "<td>{$value}</td>";
                                 }
