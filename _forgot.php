@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 include '_dbconnect.php';
 
@@ -289,7 +288,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
             </div>
         </div>
 
-        <?php if (isset($)): ?>
+        <?php if (isset($verificationMessage)): ?>
                 <div class="notification-container">
                     <p><?php echo $verificationMessage; ?></p>
                 </div>
