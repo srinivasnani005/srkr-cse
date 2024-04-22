@@ -4,6 +4,19 @@ include '../_dbconnect.php';
 
 $count = 0;
 
+if($_SESSION["user_type"] !== 'admin') {
+    header("Location: dashboard.php");
+    exit();
+}
+
+
+if($_SESSION["user_type"] === 'student') {
+    header("Location: ../");
+    exit();
+}
+
+
+
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 require 'PHPMailer/Exception.php';
@@ -29,8 +42,8 @@ function encryptEmail($email) {
 
 if (isset($_POST["submit"])) {
 
-    $stmt = $conn->prepare("INSERT INTO student_tb (Name, Register_Number, Email, Password, Year, Branch, Section, verification_code, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE)");
-    $stmt->bind_param("ssssssss", $name, $register_number, $email, $password, $year, $branch, $section, $verification_code);
+    $stmt = $conn->prepare("INSERT INTO student_tb (Name, Register_Number, Email, Password, Year, Branch, Section,  is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, FALSE)");
+    $stmt->bind_param("sssssss", $name, $register_number, $email, $password, $year, $branch, $section);
 
     foreach ($_SESSION["student_data"] as $student) {
         // Extract data from the session array

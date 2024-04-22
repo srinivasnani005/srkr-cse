@@ -1,9 +1,11 @@
 <?php
-session_start();
+
+require '../_dbconnect.php';
+
 
 $var = isset($_SESSION['var']) ? $_SESSION['var'] : false;
 
-if (substr($_SERVER['REQUEST_URI'], -7) === "/Admin/" || !$var) {
+if (substr($_SERVER['REQUEST_URI'], -7) === "SRKRCSE" || !$var) {
     header("Location: ../");
     exit();
 }
@@ -12,10 +14,7 @@ $loginSuccess = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Replace these with your actual database connection details
-    $servername = "localhost";
-    $username = "root";
-    $password = ""; // Assuming no password
-    $dbname = "ncu"; // Database name
+
     $tablename = "admin_tb"; // Table name
 
     // Create connection
@@ -36,9 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // If user exists, set loginSuccess to true and store username in session
     if ($result->num_rows > 0) {
-        $loginSuccess = true;
+        $user = $result->fetch_assoc();
         $_SESSION["username"] = $enteredUsername;
-        $_SESSION["user_type"] = $enteredUsername;
+        $_SESSION["user_type"] = $user["user_type"];
+        $loginSuccess = true;
         header("Location: dashboard.php");
         exit();
     }
@@ -46,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -36,16 +36,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // If user exists, set loginSuccess to true and store username in session
     if ($result->num_rows > 0) {
-        $loginSuccess = true;
+        $user = $result->fetch_assoc();
         $_SESSION["username"] = $enteredUsername;
-        $_SESSION["user_type"] = 'admin';
-        header("Location: index.php");
+        $_SESSION["user_type"] = $user["user_type"];
+        $loginSuccess = true;
+        header("Location: dashboard.php");
         exit();
     }
 
     $conn->close();
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

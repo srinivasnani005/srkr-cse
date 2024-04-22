@@ -34,7 +34,16 @@
             </ul>
         </li>
         <li><a href="leaderboard.php" class="body-link <?php echo ($activeSection === 'leaderboard') ? 'active' : ''; ?>" data-section="leaderboard"><i class='bx bxs-chart icon' ></i>LeaderBoard</a></li>
+        <?php
+
+            $userType = $_SESSION['user_type'];
+
+            if ($userType !== 'hod') {
+        ?>
         <li><a href="create_account.php" class="body-link <?php echo ($activeSection === 'createaccount') ? 'active' : ''; ?>" data-section="createaccount"><i class='bx bxs-group icon' ></i>Create Account</a></li>
+        <?php
+            }
+        ?>
         <li><a href="folder.php" class="body-link <?php echo ($activeSection === 'Folder') ? 'active' : ''; ?>" id="load_content_btn" data-section="Folder"><i class='bx bxs-widget icon' ></i>Folders</a></li>
         <li class="divider" data-text="study and forms"></li>
         <!-- <li><a href="#" class="body-link" data-section="yourcertificates"><i class='bx bx-table icon' ></i>Your Certificates</a></li> -->

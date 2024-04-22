@@ -82,26 +82,41 @@
     <div class="resume-container">
         <h1>Select a Resume</h1>
         <div class="resume-list">
-            <div class="resume-item" onclick="selectResume(this)">
+            <div class="resume-item" onclick="selectResume('resume.pdf', this)">
                 <img src="images/resume1.png" alt="Resume 1">
             </div>
-            <div class="resume-item" onclick="selectResume(this)">
+            <div class="resume-item" onclick="selectResume('resume2.pdf', this)">
                 <img src="images/resume2.png" alt="Resume 2">
             </div>
-            <div class="resume-item" onclick="selectResume(this)">
+            <div class="resume-item" onclick="selectResume('resume3.pdf', this)">
                 <img src="images/resume3.png" alt="Resume 3">
             </div>
         </div>
-        <button id="downloadBtn" class="download-btn" disabled>Download Resume</button>
+        <button id="downloadBtn" class="download-btn" disabled onclick="downloadResume()">Download Resume</button>
     </div>
     
     <script>
-        function selectResume(resumeItem) {
+        let selectedResume = '';
+
+        function selectResume(resumeFileName, resumeItem) {
+            selectedResume = resumeFileName;
             const resumeItems = document.querySelectorAll('.resume-item');
             resumeItems.forEach(item => item.classList.remove('selected'));
             resumeItem.classList.add('selected');
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.disabled = false;
+        }
+
+        function downloadResume() {
+            if (selectedResume) {
+                const pdfUrl = selectedResume;
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.setAttribute('download', selectedResume);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         }
     </script>
 </body>

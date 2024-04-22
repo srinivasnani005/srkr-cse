@@ -2,14 +2,15 @@
 $activeSection = 'search';
 include '../_dbconnect.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['Register_Number'])) {
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
     header("Location: ../");
     exit();
 }
 
-// Fetch user data
 $searchvalue = $_SESSION['Register_Number'];
+
 $sql = "SELECT * FROM student_tb WHERE Register_Number = '$searchvalue'";
 $result = $conn->query($sql);
 
@@ -22,31 +23,58 @@ if ($result->num_rows > 0) {
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Fetch form data
-    $name = $_POST["name"];
-    $location = $_POST["location"];
-    $year = $_POST["year"];
-    $mother = $_POST["mother"];
-    $father = $_POST["father"];
-    $branch = $_POST["branch"];
-    $gender = $_POST["gender"];
-    $address = $_POST["address"];
-    $dob = $_POST["dob"];
+    // Fetch form data with default values
+    $name = isset($_POST["name"]) ? $_POST["name"] : $user_data["Name"];
+    $location = isset($_POST["location"]) ? $_POST["location"] : $user_data["location"];
+    $register_number = isset($_POST["register_number"]) ? $_POST["register_number"] : $user_data["Register_Number"];
+    $year = isset($_POST["year"]) ? $_POST["year"] : $user_data["Year"];
+    $email = isset($_POST["email"]) ? $_POST["email"] : $user_data["Email"];
+    $phone = isset($_POST["phone"]) ? $_POST["phone"] : $user_data["Phone_Number"];
+    $mother = isset($_POST["mother"]) ? $_POST["mother"] : $user_data["Mother_Name"];
+    $father = isset($_POST["father"]) ? $_POST["father"] : $user_data["Father_Name"];
+    $branch = isset($_POST["branch"]) ? $_POST["branch"] : $user_data["Branch"];
+    $gender = isset($_POST["gender"]) ? $_POST["gender"] : $user_data["Gender"];
+    $address = isset($_POST["address"]) ? $_POST["address"] : $user_data["Address"];
+    $dob = isset($_POST["dob"]) ? $_POST["dob"] : $user_data["Date_of_Birth"];
+    $is_verified = isset($_POST["is_verified"]) ? $_POST["is_verified"] : $user_data["is_verified"];
+    $password = isset($_POST["password"]) ? $_POST["password"] : $user_data["Password"];
+    $section = isset($_POST["section"]) ? $_POST["section"] : $user_data["Section"];
+    $id = isset($_POST["id"]) ? $_POST["id"] : $user_data["id"];
+    $count = isset($_POST["count"]) ? $_POST["count"] : $user_data["count"];
+    $tenth_gpa = isset($_POST["10th_gpa"]) ? $_POST["10th_gpa"] : $user_data["10th_gpa"];
+    $tenth_school_name = isset($_POST["10th_school_name"]) ? $_POST["10th_school_name"] : $user_data["10th_school_name"];
+    $inter_gpa = isset($_POST["inter_gpa"]) ? $_POST["inter_gpa"] : $user_data["inter_gpa"];
+    $inter_college_name = isset($_POST["inter_college_name"]) ? $_POST["inter_college_name"] : $user_data["inter_college_name"];
+    $btech_cgpa = isset($_POST["btech_cgpa"]) ? $_POST["btech_cgpa"] : $user_data["btech_cgpa"];
 
     // Update user data in the database
     $sql = "UPDATE student_tb SET 
             Name='$name', 
             location='$location', 
+            Register_Number='$register_number', 
             Year='$year', 
+            Email='$email', 
+            Phone_Number='$phone', 
             Mother_Name='$mother', 
             Father_Name='$father', 
             Branch='$branch', 
             Gender='$gender', 
             Address='$address', 
-            Date_of_Birth='$dob' 
+            Date_of_Birth='$dob', 
+            is_verified='$is_verified', 
+            Password='$password', 
+            Section='$section', 
+            id='$id', 
+            count='$count', 
+            10th_gpa='$tenth_gpa', 
+            10th_school_name='$tenth_school_name', 
+            inter_gpa='$inter_gpa', 
+            inter_college_name='$inter_college_name', 
+            btech_cgpa='$btech_cgpa' 
             WHERE Register_Number='$searchvalue'";
 
     if ($conn->query($sql) === TRUE) {
+        // User data updated successfully
         // Redirect to the same page to refresh the data
         header("Location: _profile.php");
         exit();
@@ -56,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -139,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-/* Modal */
+/* Modal Overlay */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -149,29 +178,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Modal Content */
 .modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 90%; /* Set maximum width for the modal */
+    max-height: 90%; /* Set maximum height for the modal */
+    overflow-y: auto; /* Enable vertical scrollbar when content exceeds height */
 }
 
+/* Modal Header */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .modal-header h2 {
-    font-size: 1.5rem;
+    margin: 0;
 }
 
 .close {
@@ -184,22 +216,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     color: #666;
 }
 
-.modal-body label {
-    margin-bottom: 5px;
+/* Modal Body */
+.modal-body {
+    padding: 20px;
 }
 
+/* Input Container - 2 Inputs per Row on Larger Screens */
+.input-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* Input Fields - 50% width on Larger Screens */
 .modal-body input {
-    width: 100%;
+    /* width: calc(50% - 10px);  */
+    margin-right: 20px;
+    margin-bottom: 20px;
     padding: 10px;
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
+/* Button */
 .modal-body button {
     padding: 10px 20px;
     background-color: #007bff;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -209,6 +253,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 .modal-body button:hover {
     background-color: #0056b3;
 }
+
+/* scroll bar hidden */
+.modal-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Close Button */
+.close {
+    font-size: 1.5rem;
+}
+
+
 
     </style>
     <title>Search Student</title>
@@ -239,6 +295,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span class="profile-nav-item" onclick="showProfile('profile-step2')">Grades</span>
                     <span class="profile-nav-item" onclick="showProfile('profile-step3')">Achievements</span>
                 </div>
+
+                
 
                 <div class="profile-part2-buttons">
                     <button class="Generate-resume" onclick="GenerateResume()">Generate Resume</button>
@@ -288,26 +346,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div id="profile-step2" class="profile-content">
                     <h2>Grades</h2>
-                    <form action="_profile.php" method="post">
-                        <label for="10th_school_name">10th School Name:</label>
-                        <input type="text" id="10th_school_name" name="10th_school_name" value="<?php echo $user_data["10th_school_name"]; ?>">
-
-                        <label for="10th_gpa">10th GPA:</label>
-                        <input type="text" id="10th_gpa" name="10th_gpa" value="<?php echo $user_data["10th_gpa"]; ?>">
-
-                        <label for="inter_college_name">Inter College Name:</label>
-                        <input type="text" id="inter_college_name" name="inter_college_name" value="<?php echo $user_data["inter_college_name"]; ?>">
-
-                        <label for="inter_gpa">Inter GPA:</label>
-                        <input type="text" id="inter_gpa" name="inter_gpa" value="<?php echo $user_data["inter_gpa"]; ?>">
-
-                        <p>College Name: SRKR Engineering College</p>
-                        <label for="btech_cgpa">B.Tech CGPA:</label>
-                        <input type="text" id="btech_cgpa" name="btech_cgpa" value="<?php echo $user_data["btech_cgpa"]; ?>">
-
-                        <button type="submit">Save</button>
-                    </form>
+                    <table class="blue-table">
+                        <tr>
+                            <th>10th School Name</th>
+                            <td><?php echo $user_data["10th_school_name"]; ?></td>
+                        </tr>
+                        <tr>
+                            <th>10th GPA</th>
+                            <td><?php echo $user_data["10th_gpa"]; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Inter College Name</th>
+                            <td><?php echo $user_data["inter_college_name"]; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Inter GPA</th>
+                            <td><?php echo $user_data["inter_gpa"]; ?></td>
+                        </tr>
+                        <tr>
+                            <th>College Name</th>
+                            <td>SRKR Engineering College</td>
+                        </tr>
+                        <tr>
+                            <th>B.Tech CGPA</th>
+                            <td><?php echo $user_data["btech_cgpa"]; ?></td>
+                        </tr>
+                    </table>
                 </div>
+
 
                 <div id="profile-step3" class="profile-content">
                     <h2>Achievements</h2>
@@ -315,6 +381,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
 
+            <!-- Edit Modal -->
             <!-- Edit Modal -->
             <div id="modal" class="modal-overlay">
                 <div class="modal-content" id="modalContent">
@@ -324,6 +391,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="modal-body">
                         <form action="_profile.php" method="post">
+                            <!-- Input fields for editing personal details -->
                             <label for="name">Name:</label>
                             <input type="text" id="name" name="name" value="<?php echo $user_data["Name"]; ?>">
 
@@ -331,7 +399,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="text" id="location" name="location" value="<?php echo $user_data["location"]; ?>">
 
                             <label for="year">Year:</label>
-                            <input type="text" id="year" name="year" value="<?php echo $user_data["Year"]; ?>">
+                            <input type="text" id="year" name="year" value="<?php echo $user_data["Year"]; ?>" hidden>
 
                             <label for="mother">Mother's Name:</label>
                             <input type="text" id="mother" name="mother" value="<?php echo $user_data["Mother_Name"]; ?>">
@@ -343,7 +411,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="text" id="branch" name="branch" value="<?php echo $user_data["Branch"]; ?>">
 
                             <label for="gender">Gender:</label>
-                            <input type="text" id="gender" name="gender" value="<?php echo $user_data["Gender"]; ?>">
+                            <select id="gender" name="gender">
+                                <option value="male" <?php if ($user_data["Gender"] == "male") echo "selected"; ?>>Male</option>
+                                <option value="female" <?php if ($user_data["Gender"] == "female") echo "selected"; ?>>Female</option>
+                            </select>
+
 
                             <label for="address">Address:</label>
                             <input type="text" id="address" name="address" value="<?php echo $user_data["Address"]; ?>">
@@ -351,11 +423,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label for="dob">Date of Birth:</label>
                             <input type="date" id="dob" name="dob" value="<?php echo $user_data["Date_of_Birth"]; ?>">
 
+                            <!-- Input fields for editing 10th details -->
+                            <label for="10th_school_name">10th School Name:</label>
+                            <input type="text" id="10th_school_name" name="10th_school_name" value="<?php echo $user_data["10th_school_name"]; ?>">
+
+                            <label for="10th_gpa">10th GPA:</label>
+                            <input type="text" id="10th_gpa" name="10th_gpa" value="<?php echo $user_data["10th_gpa"]; ?>">
+
+                            <!-- Input fields for editing inter details -->
+                            <label for="inter_college_name">Inter College Name:</label>
+                            <input type="text" id="inter_college_name" name="inter_college_name" value="<?php echo $user_data["inter_college_name"]; ?>">
+
+                            <label for="inter_gpa">Inter GPA:</label>
+                            <input type="text" id="inter_gpa" name="inter_gpa" value="<?php echo $user_data["inter_gpa"]; ?>">
+
+                            <!-- Input fields for editing B.Tech details -->
+                            <label for="btech_cgpa">B.Tech CGPA:</label>
+                            <input type="text" id="btech_cgpa" name="btech_cgpa" value="<?php echo $user_data["btech_cgpa"]; ?>">
+
                             <button type="submit">Save</button>
                         </form>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
