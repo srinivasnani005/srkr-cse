@@ -94,11 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-                <div class="profile-part2-buttons">
+                <!-- <div class="profile-part2-buttons">
                     <button class="Generate-resume" onclick="GenerateResume()">Generate Resume</button>
                     <button class="edit-button" onclick="openEditModal()">Edit Data</button>
 
-                </div>
+                </div> -->
 
                 <div id="profile-step1" class="profile-content active">
 

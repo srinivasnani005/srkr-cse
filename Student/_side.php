@@ -1,3 +1,15 @@
+<?php
+
+if($_SESSION["user_type"] !== 'student' || !isset($_SESSION["user_type"])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+?>
+
+
 <head>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
