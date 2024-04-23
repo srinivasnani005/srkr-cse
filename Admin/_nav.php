@@ -6,6 +6,14 @@ if (isset($_GET['logout'])) {
     header("Location: ../");
     exit();
 }
+
+if($_SESSION["user_type"] === 'student' || !isset($_SESSION["user_type"])) || 
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
 ?>
 
 <section id="content">

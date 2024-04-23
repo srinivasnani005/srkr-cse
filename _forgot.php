@@ -25,12 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_email'])) {
     $register_number = $_POST['register_number'];
     $email = $_POST['email'];
 
-
-    $sql = "SELECT email FROM student_tb WHERE Register_Number='$register_number' AND Email='$email'" ;
-
+    // Query to check if the email matches the Register Number
+    $sql = "SELECT email FROM student_tb WHERE Register_Number='$register_number'";
     $result = mysqli_query($conn, $sql);
-
-    // check if the person account is like email is verified or not like is_verified is 1 then  pass the error message like for the nofictioan message 
 
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
@@ -68,7 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_email'])) {
                 echo "<script>alert('Something went wrong')</script>";
             }
         } else {
-            echo "<script>alert('Entered email does not match the registered email. Please check your details and try again.')</script>";
+            // Call showNotification function from _notification.php file for email mismatch error
+            showNotification("Entered email does not match the registered email. Please check your details and try again.", "error");
         }
     } else {
         echo "<script>alert('Register Number not found.')</script>";
@@ -302,7 +300,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
     <?php include '_footer.php'; ?>
 
 
-
+<?php
+function showNotification($message, $type) {
+    echo "<script>";
+    echo "var xhr = new XMLHttpRequest();";
+    echo "xhr.open('POST', '_notification.php', true);";
+    echo "xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');";
+    echo "xhr.send('message=$message&type=$type');";
+    echo "</script>";
+}
+?>
 
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
@@ -380,14 +387,22 @@ function changePassword() {
     xhr.send("change_password=1&new_password=" + new_password + "&confirm_password=" + confirm_password + "&register_number=" + register_number);
 }
 
+
 function startCountdown() {
     var seconds = 100;
     var countdown = document.getElementById("countdown");
     countdown.innerHTML = "Resend OTP in " + seconds + " seconds";
-
+    
     countdownTimer = setInterval(function() {
         seconds--;
         countdown.innerHTML = "Resend OTP in " + seconds + " seconds";
+
+        // Change color based on countdown value
+        if (seconds <= 20 && seconds > 10) {
+            countdown.style.color = "orange";
+        } else if (seconds <= 10) {
+            countdown.style.color = "red";
+        }
 
         if (seconds <= 0) {
             clearInterval(countdownTimer);
@@ -395,6 +410,7 @@ function startCountdown() {
         }
     }, 1000);
 }
+
 
 function goBackToStep1() {
     clearInterval(countdownTimer);

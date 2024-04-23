@@ -4,16 +4,7 @@ include '../_dbconnect.php';
 
 $count = 0;
 
-if($_SESSION["user_type"] !== 'admin') {
-    header("Location: dashboard.php");
-    exit();
-}
 
-
-if($_SESSION["user_type"] === 'student') {
-    header("Location: ../");
-    exit();
-}
 
 $count = 0;
 

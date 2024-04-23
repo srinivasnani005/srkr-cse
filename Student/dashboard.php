@@ -67,72 +67,72 @@ include '../_dbconnect.php';
                 <?php
                 $categories = array(
                     array(
-                        'title' => 's1 Student Publications',
+                        'title' => 'S1 Student Publications',
                         'description' => 'This category includes publications by students. Explore the latest research and findings.',
                         'table' => 's1'
                     ),
                     array(
-                        'title' => 's2 Student Conference Publications',
+                        'title' => 'S2 Student Conference Publications',
                         'description' => 'Find conference publications by students, showcasing their academic contributions.',
                         'table' => 's2'
                     ),
                     array(
-                        'title' => 's3 Student Internships',
+                        'title' => 'S3 Student Internships',
                         'description' => 'Browse through the internships undertaken by students to gain practical experience.',
                         'table' => 's3'
                     ),
                     array(
-                        'title' => 's4 Student Certificate Courses',
+                        'title' => 'S4 Student Certificate Courses',
                         'description' => 'Explore the certificate courses completed by students to enhance their skills.',
                         'table' => 's4'
                     ),
                     array(
-                        'title' => 's5 Student Workshops Participated',
+                        'title' => 'S5 Student Workshops Participated',
                         'description' => 'Discover workshops participated in by students to broaden their knowledge.',
                         'table' => 's5'
                     ),
                     array(
-                        'title' => 's6 Academic Events Organized by Students',
+                        'title' => 'S6 Academic Events Organized by Students',
                         'description' => 'Find out about academic events organized by students, fostering learning and collaboration.',
                         'table' => 's6'
                     ),
                     array(
-                        'title' => 's7 Student NPTEL Certifications',
+                        'title' => 'S7 Student NPTEL Certifications',
                         'description' => 'View NPTEL certifications achieved by students, demonstrating their expertise in various subjects.',
                         'table' => 's7'
                     ),
                     array(
-                        'title' => 's8 Student Professional Body Memberships',
+                        'title' => 'S8 Student Professional Body Memberships',
                         'description' => 'Explore professional body memberships held by students, connecting them with industry professionals.',
                         'table' => 's8'
                     ),
                     array(
-                        'title' => 's9 Student Participations and Awards/Prizes',
+                        'title' => 'S9 Student Participations and Awards/Prizes',
                         'description' => 'Explore student participations and awards/prizes earned by students for their achievements.',
                         'table' => 's9'
                     ),
                     array(
-                        'title' => 's10 Students Qualified in Competitive Exams',
+                        'title' => 'S10 Students Qualified in Competitive Exams',
                         'description' => 'Find students who have qualified in competitive exams, demonstrating their academic excellence.',
                         'table' => 's10'
                     ),
                     array(
-                        'title' => 's11 Student Industry Visits',
+                        'title' => 'S11 Student Industry Visits',
                         'description' => 'Discover industry visits undertaken by students to gain practical insights into various sectors.',
                         'table' => 's11'
                     ),
                     array(
-                        'title' => 's12 Student Outreach / Service programs participated',
+                        'title' => 'S12 Student Outreach / Service programs participated',
                         'description' => 'Learn about outreach and service programs in which students have actively participated, contributing to society.',
                         'table' => 's12'
                     ),
                     array(
-                        'title' => 's13 Student Higher Studies',
+                        'title' => 'S13 Student Higher Studies',
                         'description' => 'Explore the higher studies pursued by students, including postgraduate and doctoral programs.',
                         'table' => 's13'
                     ),
                     array(
-                        'title' => 's14 Student Projects',
+                        'title' => 'S14 Student Projects',
                         'description' => 'Discover student projects spanning various fields, showcasing their creativity and innovation.',
                         'table' => 's14'
                     )

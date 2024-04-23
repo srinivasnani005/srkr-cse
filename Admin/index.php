@@ -13,27 +13,15 @@ if (substr($_SERVER['REQUEST_URI'], -7) === "SRKRCSE" || !$var) {
 $loginSuccess = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Replace these with your actual database connection details
 
-    $tablename = "admin_tb"; // Table name
+    $tablename = "admin_tb"; 
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Get username and password from form
     $enteredUsername = $_POST["username"];
     $enteredPassword = $_POST["password"];
 
-    // Prepare SQL statement to check if user exists with the provided credentials
     $sql = "SELECT * FROM $tablename WHERE username='$enteredUsername' AND password='$enteredPassword'";
     $result = $conn->query($sql);
 
-    // If user exists, set loginSuccess to true and store username in session
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         $_SESSION["username"] = $enteredUsername;
@@ -144,7 +132,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
 
-        /* Additional animations */
         .animated-text {
             font-size: 20px;
             color: #333;
@@ -156,7 +143,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             opacity: 1;
         }
 
-        /* Additional animation for success message */
         .success-message {
             color: green;
             margin-top: 10px;
@@ -168,6 +154,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             opacity: 1;
         }
 
+        .shake{
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
 
 
         
@@ -190,20 +185,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !$loginSuccess): ?>
                 <p class="error-message shake">Invalid username or password!</p>
                 <script>
-                    // Add JavaScript logic to remove shake animation and hide error message after 6 seconds
                     var errorMessage = document.querySelector('.error-message');
                     errorMessage.classList.add('shake');
                     setTimeout(function() {
                         errorMessage.classList.remove('shake');
                         errorMessage.style.opacity = '0';
-                    }, 6000); // Hide the error message after 6 seconds
+                    }, 6000); 
                 </script>
             <?php endif; ?>
         </form>
     </div>
 
     <script>
-        // Additional JavaScript for animated text
         window.onload = function() {
             document.querySelector('.animated-text').classList.add('visible');
             <?php if ($loginSuccess): ?>
