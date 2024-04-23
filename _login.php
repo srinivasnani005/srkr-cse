@@ -1,6 +1,5 @@
 <?php
 include '_dbconnect.php';
-include '_notification.php'; 
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     if (isset($_SESSION['user_type'])) {
@@ -31,6 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header('Location: Student/dashboard.php');
                 exit();
             } else {
+                include '_notification.php'; 
+
                 showNotification("Please verify your email before logging in.", "error");
             }
         } else {

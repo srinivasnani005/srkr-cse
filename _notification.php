@@ -1,10 +1,6 @@
 <?php
-
 function showNotification($message, $type) {
-    // Define CSS classes based on message type
     $className = ($type === 'error') ? 'error-notification' : 'success-notification';
-
-    // Output HTML for notification
     echo '<div class="notification-container ' . $className . '">';
     echo '<div class="notification-content">';
     echo $message;
