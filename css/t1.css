@@ -1,0 +1,603 @@
+:root {
+    --lightblue: #4a90e2;
+    --darkblue: #2f5bea;
+    --border: #e6e6e6;
+}
+
+:root {
+--primary-color: #0366d6; /* GitHub blue color */
+--secondary-color: #005cc5; /* Darker shade of GitHub blue */
+--success-color: #3e8e41; /* Darker shade of GitHub green */
+--error-color: #d73a49; /* GitHub error color */
+--border-color: #e1e4e8; /* GitHub border color */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    z-index: 1000; 
+    top: 0;
+    padding:8px 0;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    margin-left: 0px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    white-space: nowrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-left: 50px;
+}
+
+.logo img {
+    width: 200px;
+    margin-right: 10px;
+}
+
+.nav-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-right: 25px;
+}
+
+.nav-list li {
+    display: inline;
+    margin-right: 30px;
+}
+
+.nav-list li:last-child {
+    margin-right: 0;
+}
+
+.nav-list li a {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.756);
+    text-decoration: none;
+}
+
+.cta {
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-right: 30px;
+    transition: background-color 0.3s ease;
+    box-shadow: 2px 5px 5px rgba(0, 82, 255, .1), 1px 10px 25px rgba(0, 82, 255, .1), 2px 5px 30px rgba(0, 82, 255, .3);
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+main {
+    margin-top: 55px;
+    padding: 0px;
+}
+
+
+.background-image{
+    background-image: linear-gradient(to top, rgba(20, 53, 197, 0.703), rgba(0, 0, 0, 0) 50%) , linear-gradient(to left,  rgba(0, 0, 0, 0), rgba(40, 40, 178, 0.247)  50%), url(../srkr-background.jpg);
+    align-items: center;
+    background-position: top;
+    background-size: cover;
+    text-align: left;
+    color: #fff;
+    display: flex;
+    height: calc(100vh - 100px);
+    overflow: hidden;
+    position: relative;
+    margin-top: 55px;
+}
+
+.background-content {
+    padding: 20px;
+    bottom: 10px;
+    left:30px;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 55px;
+    margin-bottom: 55px;
+    
+    
+}
+
+.background-title {
+    color: #fff;
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-align: left;
+    white-space: wrap;
+}
+
+.background-text {    
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+    white-space: wrap;
+}
+
+.download-btn {
+    background-color: #ffffff;
+    color: black;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    font-weight: 700;
+    content: "Download";
+}
+
+.download-btn:hover {
+    background-color: #f4f4f4;
+}
+
+.whats-new-btn{
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    font-weight: 700;
+    content: "Download";
+}
+
+.whats-new-btn:hover {
+    background-color: #5a94d3;
+}
+
+
+/* login form css */
+.form-container {
+    background-color: #ececec;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 90%;
+    padding: 30px;
+    margin: 0 auto;
+}
+
+.login-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #24292e;
+    font-size: 16px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    outline: none;
+    font-size: 16px;
+    background-color: #ffffff4c;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(3, 102, 214, 0.5);
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    width:100%;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: background-color 0.3s ease;
+    box-shadow: 2px 5px 5px rgba(0, 82, 255, .1), 1px 10px 25px rgba(0, 82, 255, .1), 2px 5px 30px rgba(0, 82, 255, .3);
+
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+    transform:  scale(1.02);
+}
+
+input[type="submit"]:active {
+    background-color: var(--darkblue);
+    transform: scale(0.95);
+}
+
+
+.error {
+    color: var(--error-color);
+    margin-top: 15px;
+    font-size: 16px;
+    
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.modal-content {
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    margin: 10% auto;
+    border-radius: 8px;
+    max-width: 90%; 
+    width: 200px; 
+    padding: 20px;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #333;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.modal-body {
+    padding-top: 10px;
+}
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .form-container {
+        max-width: 70%;
+        padding: 20px;
+        margin-bottom: 50px;
+    }
+
+    .login-form {
+        padding: 40px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 12px;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    input[type="submit"] {
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .error {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .modal{
+        margin-top:60px;
+    }
+}
+
+
+/* body-content */
+
+.body-content {
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.body-content p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.body-content ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.body-content li {
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #666;
+}
+
+
+
+
+/* fotter  */
+
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-column {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.footer-column h3 {
+    margin-bottom: 10px;
+    color: white; /* Inherit color from the footer */
+}
+
+.footer-links {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 5px;
+}
+
+.footer-links li a {
+    color: white;
+    text-decoration: none;
+}
+
+
+/* Responsive */
+
+
+html {
+    overflow-x: hidden;
+}
+
+
+
+/* Responsive  */
+
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 10px 0;
+    }
+
+    .header-left {
+        margin-left: 10px;
+    }
+
+    .header-right {
+        margin-right: 10px;
+    }
+
+    .nav-list {
+        margin-right: 10px;
+        display: none;
+    }
+
+    .logo{
+        margin-left: 15px;
+    }
+
+    .background-content {
+        padding: 10px;
+        bottom: 100px;
+        left:30px;
+    }
+
+    .background-title {
+        font-size: 50px;
+    }
+
+    .background-text {
+        font-size: 14px;
+    }
+
+
+
+    .news-row {
+        flex-direction: column; /* Arrange items vertically for smaller screens */
+        
+    }
+  
+    .news-item {
+        flex: none; /* Reset flex to allow each item to take full width */
+        margin: 0; /* Reset margin */
+        width: 100%; /* Set width to full width */
+        margin-bottom: 40px;
+    }
+
+
+    
+    .footer-inner {
+        flex-direction: column;
+    }
+
+    .footer-column {
+        flex: 1;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .footer-column:last-child {
+        margin-bottom: 0;
+    }
+}
+
+
+
+/* Responsive  */
+
+@media screen and (max-width: 576px) {
+    .header {
+        padding: 10px 0;
+    }
+
+    .header-left {
+        margin-left: 10px;
+    }
+
+    .header-right {
+        margin-right: 10px;
+    }
+
+    .nav-list {
+        margin-right: 10px;
+        display: none;
+    }
+
+    .background-content {
+        padding: 10px;
+        bottom: 70px;
+        left:30px;
+    }
+
+    .background-title {
+        font-size: 35px;
+    }
+
+    .background-text {
+        font-size: 14px;
+    }
+    
+
+    .footer-inner {
+        flex-direction: column;
+    }
+
+    .footer-column {
+        flex: 1;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .footer-column:last-child {
+        margin-bottom: 0;
+    }
+}
+
+
+
+:root {
+    --lightblue: #4a90e2;
+    --darkblue: #2f5bea;
+    --border: #e6e6e6;
+}
+
