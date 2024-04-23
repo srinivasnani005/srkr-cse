@@ -31,7 +31,7 @@
     <ul class="side-menu">
         <li><a href="dashboard.php" class="body-link <?php echo ($activeSection === 'dashboard') ? 'active' : ''; ?>" data-section="dashboard"><i class='bx bxs-dashboard icon' ></i> Dashboard</a></li>
         <li class="divider" data-text="main">Main</li>
-        <li>
+        <!-- <li>
             <a href="#" class="body-link <?php echo ($activeSection === 'academicyears') ? 'active' : ''; ?>" data-section="Academicyears"><i class='bx bxs-inbox icon' ></i> Academic Years<i class='bx bx-chevron-right icon-right' ></i></a>
             <ul class="side-dropdown">
                 <li><a href="#">2023-2027</a></li>
@@ -41,7 +41,7 @@
                 <li><a href="#">2019-2023</a></li>
                 <li><a href="#">2018-2022</a></li>
             </ul>
-        </li>
+        </li> -->
         <li><a href="leaderboard.php" class="body-link <?php echo ($activeSection === 'leaderboard') ? 'active' : ''; ?>" data-section="leaderboard"><i class='bx bxs-chart icon' ></i>LeaderBoard</a></li>
         <!-- <li><a href="certificates.php" class="body-link <?php echo ($activeSection === 'certificates') ? 'active' : ''; ?>" data-section="certificates"><i class='bx bxs-book icon' ></i>Certificates</a></li> -->
         <li><a href="uploadform.php" class="body-link <?php echo ($activeSection === 'uploadform') ? 'active' : ''; ?>" data-section="uploadform"><i class='bx bxs-widget icon' ></i>Upload Form</a></li>

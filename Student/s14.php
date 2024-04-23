@@ -57,11 +57,12 @@ $targetDir = "../uploads/S7/$branch/2024/";
 
     if ($conn->query($sql) === TRUE) {
         echo "New record created successfully";
+        include 'totalcount.php';
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
-    $conn->close();
+    
 }
 ?>
 

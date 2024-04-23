@@ -121,7 +121,7 @@ include '../_dbconnect.php';
                         echo '<p class="create-form-description">' . $category['description'] . '</p>';
                         echo '<div class="create-form-actions">';
                         // open form from teh Forms folder and then s1.php....
-                        echo '<button class="create-form-button" onclick="openForm(\'' . $category['filename'] . '\')">Create Form</button>';
+                        echo '<button class="create-form-button" onclick="openForm(\'' . $category['filename'] . '\')">Upload Form</button>';
                         echo '</div>';
                         echo '</div>';
 

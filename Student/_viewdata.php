@@ -51,7 +51,7 @@ include '../_dbconnect.php';
                         <li><a href="#">Dashboard</a></li>
                     </ul>
                 </div>
-                <div class="dashboard-header-right">Total Count :<?php echo 1; ?></div>
+                <!-- <div class="dashboard-header-right">Total Count :<?php echo 1; ?></div> -->
             </div>
 
             <a href="javascript:history.back()" style="text-decoration: none; color: #777777; font-size: 22px; font-weight: 800; text-align: left;">

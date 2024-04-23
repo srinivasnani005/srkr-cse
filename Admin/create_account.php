@@ -15,6 +15,7 @@ if($_SESSION["user_type"] === 'student') {
     exit();
 }
 
+$count = 0;
 
 
 require 'PHPMailer/PHPMailer.php';
@@ -46,6 +47,7 @@ if (isset($_POST["submit"])) {
     $stmt->bind_param("sssssss", $name, $register_number, $email, $password, $year, $branch, $section);
 
     foreach ($_SESSION["student_data"] as $student) {
+
         // Extract data from the session array
         $name = $student['name'];
         $register_number = $student['register_number'];
@@ -60,10 +62,10 @@ if (isset($_POST["submit"])) {
 
             Verification($email, $register_number, $name);
             $stmt->execute();
+            $count++;
         }
     }
 
-    $count = 2;
     echo '<script>alert("Verification emails have been successfully sent to ' . $count . ' students.");</script>';
 
 

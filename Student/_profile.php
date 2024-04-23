@@ -393,7 +393,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <form action="_profile.php" method="post">
                             <!-- Input fields for editing personal details -->
                             <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" value="<?php echo $user_data["Name"]; ?>">
+                            <input type="text" id="name" name="name" value="<?php echo $user_data["Name"]; ?>"readonly >
 
                             <label for="location">Location:</label>
                             <input type="text" id="location" name="location" value="<?php echo $user_data["location"]; ?>">

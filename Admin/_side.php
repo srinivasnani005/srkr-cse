@@ -1,3 +1,13 @@
+<?php
+
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+?>
+
 <style>
     .college-logo {
         width: 50px;

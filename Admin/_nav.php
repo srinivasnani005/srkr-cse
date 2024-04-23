@@ -5,7 +5,6 @@ if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: ../");
     exit();
-
 }
 ?>
 
@@ -34,7 +33,7 @@ if (isset($_GET['logout'])) {
                 echo "<img src='{$imageURL}' alt='Admin Image'>";
                 ?>
                 <ul class="profile-link">
-                    <li><a href="#" id="profile-link" class="body-link" data-section="profile"><i class='bx bxs-user-circle icon'></i> Admin Profile</a></li>
+                    <!-- <li><a href="#" id="profile-link" class="body-link" data-section="profile"><i class='bx bxs-user-circle icon'></i> Admin Profile</a></li> -->
                     <li><a href="#" class="body-link" data-section="settings"><i class='bx bxs-cog'></i> Settings</a></li>
                     <li><a href="?logout=1"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
                 </ul>

@@ -4,6 +4,7 @@ include '../_dbconnect.php';
 
 ?>
 <!doctype html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -42,10 +43,6 @@ include '../_dbconnect.php';
 
     <!-- Main Content -->
     <main>
-
-
-
-
         <div id="dashboard" class="content-section visible">
             <div class="dashboard-header">
                 <div class="dashboard-header-left">
@@ -54,7 +51,6 @@ include '../_dbconnect.php';
                         <li><a href="#">Dashboard</a></li>
                     </ul>
                 </div>
-                <div class="dashboard-header-right">Total Count :<?php echo 1; ?></div>
             </div>
 
             <a href="javascript:history.back()" style="text-decoration: none; color: #777777; font-size: 22px; font-weight: 800; text-align: left;">
@@ -94,7 +90,7 @@ include '../_dbconnect.php';
                             foreach ($row as $key => $value) {
                                 if ($key === 'certificate') {
                                     // If the column corresponds to the certificate file path, create a styled link to open the file
-                                    echo "<td><a href='{$value}' target='_blank' class='view-certificate-link'>View Certificate</a></td>";
+                                    echo "<td><a href='resume.pdf' target='_blank' class='view-certificate-link'>View Certificate</a></td>";
                                 } elseif ($key !== 'id') {
                                     echo "<td>{$value}</td>";
                                 }
@@ -105,6 +101,9 @@ include '../_dbconnect.php';
 
                         echo "</tbody>";
                         echo "</table>";
+
+                        echo "<button onclick='exportToExcel()' style='text-decoration: none; cursor:pointer; border:none; color: #fff; background-color: var(--blue); padding: 10px 15px; border-radius: 5px; margin-top: 20px; display: inline-block;'>Download Excel</button>";
+
                         echo "</div>";
                     } else {
                         echo "No data found";
@@ -120,6 +119,19 @@ include '../_dbconnect.php';
     </section>
 
     <script>
+        function exportToExcel() {
+            var table = document.querySelector('.leaderboard-table');
+            var html = table.outerHTML;
+
+            var excelFile = '\uFEFF' + html;
+
+            var blob = new Blob([excelFile], { type: 'application/vnd.ms-excel' });
+
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'table.xls';
+            link.click();
+        }
     </script>
 </body>
 
