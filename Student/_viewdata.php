@@ -103,7 +103,7 @@ include '../_dbconnect.php';
                         echo "</tbody>";
                         echo "</table>";
 
-                        echo "<button onclick='exportToExcel()' style='text-decoration: none; cursor:pointer; border:none; color: #fff; background-color: var(--blue); padding: 10px 15px; border-radius: 5px; margin-top: 20px; display: inline-block;'>Download Excel</button>";
+                        // echo "<button onclick='exportToExcel()' style='text-decoration: none; cursor:pointer; border:none; color: #fff; background-color: var(--blue); padding: 10px 15px; border-radius: 5px; margin-top: 20px; display: inline-block;'>Download Excel</button>";
 
                         echo "</div>";
                     } else {

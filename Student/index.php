@@ -1,5 +1,9 @@
 <?php
-session_start();
+
+include '../_dbconnect.php';
+
+
+
 ?>
 <!doctype html>
 <html lang="en">
