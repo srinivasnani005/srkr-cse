@@ -1,3 +1,30 @@
+<?php
+
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+if($_SESSION["user_type"] === 'student' || !isset($_SESSION["user_type"])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
+if (!$_SESSION['var']) {
+    header("Location: ../");
+    exit();
+}
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

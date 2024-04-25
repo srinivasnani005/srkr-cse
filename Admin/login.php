@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $var = isset($_SESSION['var']) ? $_SESSION['var'] : false;
 
@@ -7,6 +6,8 @@ if (substr($_SERVER['REQUEST_URI'], -7) === "/Admin/" || !$var) {
     header("Location: ../");
     exit();
 }
+
+
 
 $loginSuccess = false;
 

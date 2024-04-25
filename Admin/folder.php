@@ -2,6 +2,29 @@
 $activeSection = 'Folder';
 include '../_dbconnect.php';
 
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+if($_SESSION["user_type"] === 'student' || !isset($_SESSION["user_type"])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
+if (!$_SESSION['var']) {
+    header("Location: ../");
+    exit();
+}
+
+
+
+
 // This PHP script handles the folder selection and initiates a download process for the selected folder.
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['downloadFolder'])) {
     $folderName = $_POST['downloadFolder'];
