@@ -2,6 +2,21 @@
 $activeSection = 'uploadform';
 include '../_dbconnect.php';
 
+// Redirect users who are not logged in or are students
+if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+    header("Location: ../");
+    exit();
+}
+
+// Handle logout
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
 $paperTitle = $conferenceName = $location = $publisher = $dateOfConference = $dateOfPublication = $issn = $pageNumbers = $scopus = $doi = $authorsCount = $authorPosition = $facultyCoauthor = $facultyNames = $paperPresented = $presentationMode = $coauthorsDetails = $financialSupport = $amountClaimed = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

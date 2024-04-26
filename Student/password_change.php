@@ -2,6 +2,21 @@
 
 include '../_dbconnect.php';
 
+// Redirect users who are not logged in or are students
+if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+    header("Location: ../");
+    exit();
+}
+
+// Handle logout
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
 if(isset($_SESSION['verified']) && $_SESSION['verified'] === true) {
     if(isset($_POST['change_password']) && isset($_POST['email'])) {
         $new_password = $_POST['password'];

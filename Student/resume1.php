@@ -2,6 +2,23 @@
 // Include mpdf library
 require_once 'mpdf_v8.0.10.php'; // Assuming mpdf_v8.0.10.php is in the same directory as this file
 
+
+// Redirect users who are not logged in or are students
+if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+    header("Location: ../");
+    exit();
+}
+
+// Handle logout
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
+
 // Include database connection
 require_once('_dbconnect.php');
 

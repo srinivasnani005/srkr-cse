@@ -5,6 +5,19 @@
 $activeSection = 'uploadform';
 include '../_dbconnect.php';
 
+// Redirect users who are not logged in or are students
+if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+    header("Location: ../");
+    exit();
+}
+
+// Handle logout
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
 
 $academicYear = $eventTitle = $eventType = $eventLevel = $organizedBy = $place = $eventDate = $individualOrTeam = $teamMembers = $positionWon = $proofOfParticipation = $photoWhileReceivingPrize = "";
 

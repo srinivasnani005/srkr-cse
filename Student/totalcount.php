@@ -2,6 +2,8 @@
 
 include '../_dbconnect.php';
 
+
+
 // Get the logged-in student's register number
 $registerNumber = $_SESSION['Register_Number'];
 
@@ -10,7 +12,7 @@ $tableCounts = array();
 
 // Iterate through tables S1 to S14
 for ($i = 1; $i <= 14; $i++) {
-    $tableName = 'S' . $i;
+    $tableName = 's' . $i;
     
     // Count rows in each table where 'Register_Number' matches
     $sqlCount = "SELECT COUNT(*) AS count FROM $tableName WHERE Register_Number = ?";
