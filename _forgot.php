@@ -1,6 +1,7 @@
 <?php
 
 include '_dbconnect.php';
+include '_notification.php';
 
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
@@ -17,30 +18,30 @@ function generateOTP($length = 6) {
     for ($i = 0; $i < $length; $i++) {
         $otp .= $characters[rand(0, strlen($characters) - 1)];
     }
+    showNotification("Entered register number and email do not match.", "error");
     return $otp;
+    
 }
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_email'])) {
-    $register_number = $_POST['register_number'];
-    $email = $_POST['email'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['send_email'])) {
+        $register_number = $_POST['register_number'];
+        $email = $_POST['email'];
 
+        $sql = "SELECT * FROM student_tb WHERE Register_Number='$register_number' AND Email='$email'";
+        $result = mysqli_query($conn, $sql);
 
-    $sql = "SELECT email FROM student_tb WHERE Register_Number='$register_number' AND Email='$email'" ;
+        if (mysqli_num_rows($result) == 1) {
 
-    $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $stored_email = $row['Email'];
 
-    // check if the person account is like email is verified or not like is_verified is 1 then  pass the error message like for the nofictioan message 
-
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        $stored_email = $row['email']; // Fetch the stored email from the database
-
-        if ($email == $stored_email) { // Check if entered email matches stored email
-            echo $email, $stored_email;
+            // Proceed to send OTP
             $otp = generateOTP();
             $_SESSION[$register_number . '_otp'] = $otp;
 
+            // Send OTP via email
             $mail = new PHPMailer(true);
             try {
                 $mail->SMTPDebug = SMTP::DEBUG_OFF;                      // Disable verbose debug output
@@ -55,65 +56,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_email'])) {
                 // Recipients
                 $mail->setFrom('srinivasnani005@gmail.com', 'SRKR Engineering College');
                 $mail->addAddress($email);                               // Recipient's email
-                $mail->isHTML(true);                                     
+                $mail->isHTML(true);
                 $mail->Subject = 'OTP for password reset';
                 $mail->Body    = "Dear student,<br><br>Your OTP for password reset is: <b>$otp</b><br><br>Your Register Number: $register_number<br><br>Regards,<br>SRKR Engineering College";
 
                 // Send the email
                 $mail->send();
-
-                echo "<script>alert('OTP has been sent to your email.')</script>";
-                echo "<script>window.location.href='forgot_password.php';</script>";
+                echo "OTP has been sent to your email. Please wait for it.";
+                exit;
             } catch (Exception $e) {
-                echo "<script>alert('Something went wrong')</script>";
+                echo "Something went wrong. Please try again later.";
+                exit;
             }
         } else {
-            echo "<script>alert('Entered email does not match the registered email. Please check your details and try again.')</script>";
+            showNotification("Entered register number and email do not match.", "error");
+            
+            exit;
         }
-    } else {
-        echo "<script>alert('Register Number not found.')</script>";
-    }
-}
+    } elseif (isset($_POST['verify_otp'])) {
+        if (isset($_SESSION[$_POST['register_number'] . '_otp'])) {
+            $otp_entered = $_POST['otp_entered'];
+            $register_number = $_POST['register_number'];
+            $stored_otp = $_SESSION[$register_number . '_otp'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify_otp'])) {
-    if (isset($_SESSION[$_POST['register_number'] . '_otp'])) {
-        $otp_entered = $_POST['otp_entered'];
+            if ($otp_entered == $stored_otp) {
+                unset($_SESSION[$register_number . '_otp']);
+                echo "Otp verified successfully. Proceed to change password.";
+                exit;
+            } else {
+                echo "Invalid OTP";
+                exit;
+            }
+        } else {
+            echo "Invalid request";
+            exit;
+        }
+    } elseif (isset($_POST['change_password'])) {
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
         $register_number = $_POST['register_number'];
-        $stored_otp = $_SESSION[$register_number . '_otp'];
-
-        if ($otp_entered == $stored_otp) {
-            unset($_SESSION[$register_number . '_otp']);
-            echo "success";
-            exit;
+        if ($new_password == $confirm_password) {
+            $sql = "UPDATE student_tb SET Password='$new_password' WHERE Register_Number='$register_number'";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                echo "Password updated successfully!";
+                exit;
+            } else {
+                echo "Error updating password: " . mysqli_error($conn);
+                exit;
+            }
         } else {
-            echo "Invalid OTP";
+            echo "Passwords do not match";
             exit;
         }
-    } else {
-        echo "Invalid request";
-        exit;
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
-    $new_password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
-    $register_number = $_POST['register_number'];
-    if ($new_password == $confirm_password) {
-        $sql = "UPDATE student_tb SET Password='$new_password' WHERE Register_Number='$register_number'";
-        $result = mysqli_query($conn, $sql);
-        if ($result) {
-            echo "success"; 
-            exit;
-        } else {
-            echo "Error updating password: " . mysqli_error($conn);
-            exit;
-        }
-    } else {
-        echo "Passwords do not match";
-        exit;
-    } 
-}
 ?>
 
 <!DOCTYPE html>
@@ -172,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
     }
 
     .error {
-        color: red;
+        color: green;
         text-align: center;
     }
 
@@ -203,50 +201,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
         cursor: pointer;
     }
 
-     /* Notification styles */
-     .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: slideInRight 0.5s ease-in-out, fadeOut 0.5s ease-in-out 5s forwards;
-            z-index: 9999;
-            max-width: 300px; /* Limiting width for responsiveness */
-        }
-
-        /* Animation keyframes */
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-            }
-            to {
-                transform: translateX(0);
-            }
-        }
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
+     
 </style>
 </head>
 <body>
 
 <?php include '_nav.php'; ?>
-    <main>
-        <div class="background-image">
-
-
-
-
+<main>
+    <div class="background-image">
         <div class="container">
             <h2>Forgot Password</h2>
             <div id="step1">
@@ -287,23 +249,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
                 </form>
             </div>
         </div>
-
-        <?php if (isset($verificationMessage)): ?>
-                <div class="notification-container">
-                    <p><?php echo $verificationMessage; ?></p>
-                </div>
-            <?php endif; ?>
     </div>
-    
-        <div class="body-content">
-        </div>
-    </main>
-
-    <?php include '_footer.php'; ?>
-
-
-
-
+    <div class="body-content">
+    </div>
+</main>
+<?php include '_footer.php'; ?>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
 var countdownTimer;
@@ -324,7 +274,6 @@ function sendOTP() {
                 startCountdown();
             } else {
                 document.getElementById("step1Error").innerHTML = response;
-                // Clear entered OTP and reset step
                 document.getElementById("otp_entered").value = "";
                 document.getElementById("step2").style.display = "none";
                 document.getElementById("step1").style.display = "block";
@@ -344,11 +293,10 @@ function verifyOTP() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var response = xhr.responseText;
-            if (response == "success") {
+            if (response.includes("Otp verified successfully")) {
                 document.getElementById("step2Error").innerHTML = "";
                 document.getElementById("step2").style.display = "none";
                 document.getElementById("step3").style.display = "block";
-                document.getElementById("confirm_password").focus();
             } else {
                 document.getElementById("step2Error").innerHTML = response;
             }
@@ -356,8 +304,6 @@ function verifyOTP() {
     };
     xhr.send("verify_otp=1&otp_entered=" + otp_entered + "&register_number=" + register_number);
 }
-
-
 
 function changePassword() {
     var new_password = document.getElementById("new_password").value;
@@ -370,8 +316,13 @@ function changePassword() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var response = xhr.responseText;
-            if (response == "success") {
+            if (response.includes("Password updated successfully")) {
                 document.getElementById("step3Error").innerHTML = "Password changed successfully!";
+                                // redirect to the _login.php page in 3 seconds 
+                setTimeout(function() {
+                    window.location.href = "_login.php";
+                }, 3000);               
+
             } else {
                 document.getElementById("step3Error").innerHTML = response;
             }
