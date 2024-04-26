@@ -2,61 +2,26 @@
 $activeSection = 'Folder';
 include '../_dbconnect.php';
 
+// Redirect users who are not logged in or are students
+if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+    header("Location: ../");
+    exit();
+}
+
+// Handle logout
 if (isset($_GET['logout'])) {
-    $_SESSION = array();
     session_destroy();
     header("Location: ../");
     exit();
 }
 
-if($_SESSION["user_type"] === 'student' || !isset($_SESSION["user_type"])) {
-    $_SESSION = array();
-    session_destroy();
+// Ensure session variable exists
+if (!isset($_SESSION['var'])) {
     header("Location: ../");
     exit();
 }
 
-
-if (!$_SESSION['var']) {
-    header("Location: ../");
-    exit();
-}
-
-
-
-
-// This PHP script handles the folder selection and initiates a download process for the selected folder.
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['downloadFolder'])) {
-    $folderName = $_POST['downloadFolder'];
-    $zip = new ZipArchive;
-    $zipFileName = "$folderName.zip";
-
-    if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
-        $folderPath = "../Student/uploads/$folderName/";
-        if (is_dir($folderPath)) {
-            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($folderPath), RecursiveIteratorIterator::LEAVES_ONLY);
-            foreach ($files as $name => $file) {
-                if (!$file->isDir()) {
-                    $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen("../Student/uploads/") + 1);
-                    $zip->addFile($filePath, $relativePath);
-                }
-            }
-        }
-        $zip->close();
-
-        header("Content-type: application/zip");
-        header("Content-Disposition: attachment; filename=$zipFileName");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        readfile($zipFileName);
-        unlink($zipFileName);
-        exit;
-    } else {
-        echo "<script>alert('Failed to create zip file.');</script>";
-    }
-}
-
+// Function to retrieve folder names
 function getFolders($dir) {
     $folders = array_filter(glob($dir . '/*'), 'is_dir');
     $folderNames = array();
@@ -64,6 +29,46 @@ function getFolders($dir) {
         $folderNames[] = basename($folder);
     }
     return $folderNames;
+}
+
+// Handle folder download request
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['downloadFolder'])) {
+    $folderName = $_POST['downloadFolder'];
+    $zipFileName = "$folderName.zip";
+    $folderPath = "../Student/uploads/$folderName/";
+
+    // Check if folder exists
+    if (!is_dir($folderPath)) {
+        echo "<script>alert('Folder not found.');</script>";
+        exit();
+    }
+
+    // Create a zip archive
+    $zip = new ZipArchive;
+    if ($zip->open($zipFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($folderPath), RecursiveIteratorIterator::LEAVES_ONLY);
+        foreach ($files as $name => $file) {
+            if (!$file->isDir()) {
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen("../Student/uploads/") + 1);
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+        $zip->close();
+
+        // Send zip file to the browser
+        header("Content-type: application/zip");
+        header("Content-Disposition: attachment; filename=$zipFileName");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        readfile($zipFileName);
+
+        // Delete zip file after sending
+        unlink($zipFileName);
+        exit;
+    } else {
+        echo "<script>alert('Failed to create zip file.');</script>";
+    }
 }
 ?>
 
@@ -136,27 +141,18 @@ function getFolders($dir) {
 
     <!-- Main Content -->
     <main>
-
-            
-
-    <div class="unique-folder-container">
-        <?php
-        // Assuming the getFolders function is defined elsewhere in your script.
-        $folders = getFolders('../Student/uploads');
-        foreach ($folders as $folder) {
-            echo "<form action='folder.php' method='post'>";
-            echo "<input type='hidden' name='downloadFolder' value='$folder'>";
-            echo "<button type='submit' class='unique-folder-btn'>$folder</button>";
-
-
-
-            echo "</form>";
-        }
-        ?>
-    </div>
-
-
-            
+        <div class="unique-folder-container">
+            <?php
+            // Display available folders
+            $folders = getFolders('../Student/uploads');
+            foreach ($folders as $folder) {
+                echo "<form action='folder.php' method='post'>";
+                echo "<input type='hidden' name='downloadFolder' value='$folder'>";
+                echo "<button type='submit' class='unique-folder-btn'>$folder</button>";
+                echo "</form>";
+            }
+            ?>
+        </div>
     </main>
 
  
