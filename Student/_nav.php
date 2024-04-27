@@ -8,11 +8,6 @@ if (isset($_GET['logout'])) {
 
 }
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] !== 'teacher'  || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../");
-    exit();
-}
-
 
 
 
