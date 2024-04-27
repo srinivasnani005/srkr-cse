@@ -4,7 +4,6 @@ include '../_dbconnect.php';
 
 
 
-// Get the logged-in student's register number
 $registerNumber = $_SESSION['Register_Number'];
 
 // Array to store counts for each table
