@@ -1,11 +1,10 @@
 <?php
 include '_dbconnect.php';
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] !== 'teacher'  || $_SESSION['user_type'] !== 'admin') {
+if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] === 'teacher'  || $_SESSION['user_type'] === 'admin'){
     header("Location: ../");
     exit();
 }
-
 ?>
 <!doctype html>
 <html lang="en">

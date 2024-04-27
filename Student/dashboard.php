@@ -8,7 +8,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] === 'teacher'  || $_
     exit();
 }
 
-
 // Handle logout
 
 if (isset($_GET['logout'])) {

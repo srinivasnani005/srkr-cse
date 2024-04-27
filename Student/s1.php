@@ -4,8 +4,7 @@
 $activeSection = 'uploadform';
 include '../_dbconnect.php';
 
-// Redirect users who are not logged in or are students
-if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] !== 'teacher'  || $_SESSION['user_type'] !== 'admin') {
+if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] === 'teacher'  || $_SESSION['user_type'] === 'admin'){
     header("Location: ../");
     exit();
 }
