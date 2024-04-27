@@ -9,6 +9,16 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
+// $_SESSION['loggedin'] = true;
+// $_SESSION['user_type'] = 'student';
+// $_SESSION['Register_Number'] = $username;
+
+// check if the user is logged in
+if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] !== 'teacher'  || $_SESSION['user_type'] !== 'admin') {
+    header("Location: ../");
+    exit();
+}
+
 $searchvalue = $_SESSION['Register_Number'];
 
 $sql = "SELECT * FROM student_tb WHERE Register_Number = '$searchvalue'";

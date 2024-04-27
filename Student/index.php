@@ -1,5 +1,11 @@
 <?php
-session_start();
+include '_dbconnect.php';
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['user_type'] !== 'teacher'  || $_SESSION['user_type'] !== 'admin') {
+    header("Location: ../");
+    exit();
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -27,7 +33,7 @@ session_start();
         <p>
             <?php
             if (isset($_SESSION['username'])) {
-                $username = $_SESSION['username'];
+                $username = $_SESSION['Register_Number'];
                 echo "Welcome " . strtoupper($username);
             } else {
                 echo "Welcome Student ";
