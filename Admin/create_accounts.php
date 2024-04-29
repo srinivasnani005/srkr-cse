@@ -3,7 +3,6 @@
 $activeSection = 'createaccount';
 include '../_dbconnect.php';
 
-
 if (isset($_GET['logout'])) {
     $_SESSION = array();
     session_destroy();
@@ -11,32 +10,29 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-if(!isset($_SESSION["user_type"])  ||$_SESSION["user_type"] === 'student' ) {
+if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
     $_SESSION = array();
     session_destroy();
     header("Location: ../");
     exit();
 }
 
-
 if (!$_SESSION['var']) {
     header("Location: ../");
     exit();
 }
 
-
 $count = 0;
 
-require 'PHPMailer/PHPMailer.php';
-require 'PHPMailer/SMTP.php';
-require 'PHPMailer/Exception.php';
+require '../vendor/autoload.php'; // Include Composer autoload file
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // Function to encrypt the email
-function encryptEmail($email) {
+function encryptEmail($email)
+{
     return base64_encode($email);
 }
 
@@ -83,7 +79,8 @@ if (isset($_POST["submit"])) {
 }
 
 // Function to check if Register_Number already exists in the database
-function registerNumberExists($register_number) {
+function registerNumberExists($register_number)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM student_tb WHERE Register_Number = ?");
     $stmt->bind_param("s", $register_number);
@@ -91,7 +88,6 @@ function registerNumberExists($register_number) {
     $result = $stmt->get_result();
     return $result->num_rows > 0;
 }
-
 
 function Verification($email, $register_number, $name)
 {
@@ -209,6 +205,7 @@ function Verification($email, $register_number, $name)
 
 
 
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -226,142 +223,193 @@ function Verification($email, $register_number, $name)
     <title>Dashboard</title>
     <style>
         /* General Styles */
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+       /* General Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 
-        .container {
-            max-width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
+.container {
+    max-width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 10px 10px 0 0;
-        }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+}
 
-        .header h2 {
-            margin: 0;
-        }
+.header h2 {
+    margin: 0;
+}
 
-        .logout-btn {
-            background-color: #fff;
-            color: #4caf50;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+.body {
+    margin-top: 20px;
+}
 
-        .logout-btn:hover {
-            background-color: #f2f2f2;
-        }
+.upload-form {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
 
-        .body {
-            margin-top: 20px;
-        }
+.label {
+    margin-right: 10px;
+    font-weight: bold;
+    width: 60px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+.upload-input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
+    margin-right: 10px;
+    font-size: 12px;
+}
 
-        table th,
-        table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+.upload-input[type="file"] {
+    width: auto; /* Adjusted width for file input */
+}
 
-        table th {
-            background-color: #f2f2f2;
-        }
+.upload-input:last-child {
+    margin-right: 0;
+}
 
-        .upload-form {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
+.upload-btn,
+.submit-btn {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        .label {
-            margin-right: 10px;
-            font-weight: bold;
-            width: 60px;
-        }
+.upload-btn:hover,
+.submit-btn:hover {
+    background-color: #388e3c;
+}
 
-        .upload-input {
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100px;
-            margin-right: 10px;
-            font-size: 12px;
-        }
+.button-group {
+    margin-bottom: 20px;
+    text-align: right;
+}
 
-        .upload-input[type="file"] {
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-            margin-right: 10px;
-            font-size: 12px;
-        }
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Adjusted margin for better separation */
+}
 
-        .upload-input:last-child {
-            margin-right: 0;
-        }
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
 
-        .upload-btn {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+table th {
+    background-color: #f2f2f2;
+}
 
-        .upload-btn:hover {
-            background-color: #388e3c;
-        }
+/* Footer Styles */
+.footer {
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 20px; /* Added padding for separation */
+    border-top: 1px solid #ddd; /* Added border for separation */
+}
 
-        .footer {
-            text-align: right;
-            margin-top: 20px;
-        }
+/* Success Message Styles */
+#successMessage {
+    display: none;
+    color: green;
+    margin-top: 10px;
+}
 
-        .submit-btn {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+/* responsive  */
+@media screen and (max-width: 600px) {
+    .upload-form {
+        flex-direction: column;
+    }
 
-        .submit-btn:hover {
-            background-color: #388e3c;
-        }
+    .upload-input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 
-        .button-group {
-            margin-bottom: 20px;
-            text-align: right;
-        }
+    /* label */
+    .label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .upload-btn,
+    .submit-btn {
+        width: 100%;
+    }
+
+    .button-group {
+        text-align: center;
+    }
+
+    .footer {
+        text-align: center;
+    }
+
+    .table th,
+    .table td {
+        padding: 5px;
+    }
+
+    .table th {
+        font-size: 12px;
+    }
+
+    .table td {
+        font-size: 11px;
+    }
+
+    .table a {
+        font-size: 11px;
+    }
+
+    .table a:hover {
+        font-size: 11px;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .table {
+        margin-top: 10px;
+    }
+
+}
+
+
+
+
     </style>
 </head>
 <body>
@@ -489,9 +537,7 @@ function Verification($email, $register_number, $name)
             </div>
         </div>
         <!-- Footer -->
-        <div class="footer">
-            <!-- Footer content, if any -->
-        </div>
+
     </main>
 
     </section>
