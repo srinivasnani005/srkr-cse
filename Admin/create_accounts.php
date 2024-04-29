@@ -24,7 +24,7 @@ if (!$_SESSION['var']) {
 
 $count = 0;
 
-require '../vendor/autoload.php'; // Include Composer autoload file
+require 'vendor/autoload.php'; // Include Composer autoload file
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
