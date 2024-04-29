@@ -3,6 +3,28 @@
 $activeSection = 'createaccount';
 include '../_dbconnect.php';
 
+
+if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+if(!isset($_SESSION["user_type"])  ||$_SESSION["user_type"] === 'student' ) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
+if (!$_SESSION['var']) {
+    header("Location: ../");
+    exit();
+}
+
+
 $count = 0;
 
 require 'PHPMailer/PHPMailer.php';
@@ -154,7 +176,7 @@ function Verification($email, $register_number, $name)
                     <div class="content">
                         <p>Dear ' . $name . ',</p>
                         <p>Welcome to SRKR Engineering College! To complete your registration, please click the button below to verify your email address:</p>
-                        <a href="http://srkr.me/Student/verify1.php?id=' . encryptEmail($email) . '" class="button">Verify Email</a>
+                        <a href="http://srkr.me/Student/verify.php?id=' . encryptEmail($email) . '" class="button">Verify Email</a>
                         <p style="margin-top: 20px;">Your Register Number: ' . $register_number . '</p>
                     </div>
                     <div class="footer">
@@ -350,7 +372,11 @@ function Verification($email, $register_number, $name)
     <main>
         <div class="container">
             <div class="body">
+
+
+
                 <h2>Upload Excel File</h2>
+                <hr>
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="upload-form">
                         <label class="label" for="year">Year:</label>

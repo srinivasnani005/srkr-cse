@@ -54,7 +54,7 @@
         <li><a href="uploadform.php" class="body-link <?php echo ($activeSection === 'uploadform') ? 'active' : ''; ?>" data-section="uploadform"><i class='bx bxs-widget icon' ></i>Upload Form</a></li>
         <!-- <li><a href="folder.php" class="body-link <?php echo ($activeSection === 'Folder') ? 'active' : ''; ?>" id="load_content_btn" data-section="Folder"><i class='bx bxs-widget icon' ></i>/</a></li> -->
         <li class="divider" data-text="study and forms"></li>
-        <li><a href="#" class="body-link" data-section="yourcertificates"><i class='bx bx-table icon' ></i>Your Certificates</a></li>
+        <li><a href="certificates.php" class="body-link <?php echo ($activeSection === 'yourcertificates') ? 'active' : ''; ?>" data-section="yourcertificates"><i class='bx bx-table icon' ></i>Your Certificates</a></li>
         <li>
             <!-- <a href="#"><i class='bx bxs-notepad icon' ></i> Fields <i class='bx bx-chevron-right icon-right' ></i></a>
             <ul class="side-dropdown">

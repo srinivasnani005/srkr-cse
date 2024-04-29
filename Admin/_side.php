@@ -53,16 +53,23 @@ if($_SESSION["user_type"] === 'student' || !isset($_SESSION["user_type"])) {
             </ul>
         </li>
         <li><a href="leaderboard.php" class="body-link <?php echo ($activeSection === 'leaderboard') ? 'active' : ''; ?>" data-section="leaderboard"><i class='bx bxs-chart icon' ></i>LeaderBoard</a></li>
+        <li><a href="certificates.php" class="body-link <?php echo ($activeSection === 'certificates') ? 'active' : ''; ?>" data-section="certificates"><i class='bx bxs-book icon' ></i>Certificates</a></li>
         <?php
 
             $userType = $_SESSION['user_type'];
 
             if ($userType !== 'hod') {
         ?>
-        <li><a href="create_account.php" class="body-link <?php echo ($activeSection === 'createaccount') ? 'active' : ''; ?>" data-section="createaccount"><i class='bx bxs-group icon' ></i>Create Account</a></li>
+        <li class="divider" data-text="Accounts">Accounts</li>
+
+        <li><a href="create_accounts.php" class="body-link <?php echo ($activeSection === 'createaccount') ? 'active' : ''; ?>" data-section="createaccount"><i class='bx bxs-group icon' ></i>Create Account</a></li>
+        <li><a href="create_user.php" class="body-link <?php echo ($activeSection === 'createuser') ? 'active' : ''; ?>" data-section="createuser"><i class='bx bxs-group icon' ></i>Create User</a></li>
+        <li><a href="delete_account.php" class="body-link <?php echo ($activeSection === 'deleteaccount') ? 'active' : ''; ?>" data-section="deleteaccount"><i class='bx bxs-group icon' ></i>Delete Account</a></li>
         <?php
             }
         ?>
+                <li class="divider" data-text="Folder">Folder</li>
+
         <li><a href="folder.php" class="body-link <?php echo ($activeSection === 'Folder') ? 'active' : ''; ?>" id="load_content_btn" data-section="Folder"><i class='bx bxs-widget icon' ></i>Folders</a></li>
         <li class="divider" data-text="study and forms"></li>
         <!-- <li><a href="#" class="body-link" data-section="yourcertificates"><i class='bx bx-table icon' ></i>Your Certificates</a></li> -->

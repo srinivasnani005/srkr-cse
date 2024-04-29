@@ -10,7 +10,7 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-if($_SESSION["user_type"] === 'student' || !isset($_SESSION["user_type"])) {
+if(!isset($_SESSION["user_type"])  ||$_SESSION["user_type"] === 'student' ) {
     $_SESSION = array();
     session_destroy();
     header("Location: ../");
@@ -22,6 +22,7 @@ if (!$_SESSION['var']) {
     header("Location: ../");
     exit();
 }
+
 
 
 

@@ -23,7 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_num_rows($result_student) == 1) {
             $row = mysqli_fetch_assoc($result_student);
-            if ($row['is_verified'] == 1) {
+            // if is_verified set to 2 then show a message ike your account is deactivated 
+            if ($row['is_verified'] == 2) {
+                include '_notification.php'; 
+
+                showNotification("Your account is deactivated. Please contact the admin.", "error");
+            }
+            elseif ($row['is_verified'] == 1) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user_type'] = 'student';
                 $_SESSION['Register_Number'] = $username;

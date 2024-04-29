@@ -2,8 +2,15 @@
 $activeSection = 'Folder';
 include '../_dbconnect.php';
 
-// Redirect users who are not logged in or are students
-if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+if(!isset($_SESSION["user_type"])  ||$_SESSION["user_type"] === 'student' ) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: ../");
+    exit();
+}
+
+
+if (!$_SESSION['var']) {
     header("Location: ../");
     exit();
 }
@@ -15,11 +22,6 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Ensure session variable exists
-if (!isset($_SESSION['var'])) {
-    header("Location: ../");
-    exit();
-}
 
 // Function to retrieve folder names
 function getFolders($dir) {
