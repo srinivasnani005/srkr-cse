@@ -2,6 +2,8 @@
 
 $activeSection = 'createaccount';
 include '../_dbconnect.php';
+include '../_notification.php';
+
 
 if (isset($_GET['logout'])) {
     $_SESSION = array();
@@ -10,29 +12,32 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] === 'student') {
+if(!isset($_SESSION["user_type"])  ||$_SESSION["user_type"] === 'student' ) {
     $_SESSION = array();
     session_destroy();
     header("Location: ../");
     exit();
 }
 
+
 if (!$_SESSION['var']) {
     header("Location: ../");
     exit();
 }
 
+
 $count = 0;
 
-require 'vendor/autoload.php'; // Include Composer autoload file
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
+require 'PHPMailer/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // Function to encrypt the email
-function encryptEmail($email)
-{
+function encryptEmail($email) {
     return base64_encode($email);
 }
 
@@ -69,9 +74,9 @@ if (isset($_POST["submit"])) {
             }
         }
 
-        echo '<script>alert("Verification emails have been successfully sent to ' . $count . ' students.");</script>';
+        showNotification("Verification emails have been successfully sent to ' . $count . ' students.", "success");
     } else {
-        echo '<script>alert("One or more Register Numbers already exist in the database. Please check and try again.");</script>';
+        showNotification("One or more Register Numbers already exist in the database. Please check and try again.", "error");               
     }
 
     $stmt->close();
@@ -79,8 +84,7 @@ if (isset($_POST["submit"])) {
 }
 
 // Function to check if Register_Number already exists in the database
-function registerNumberExists($register_number)
-{
+function registerNumberExists($register_number) {
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM student_tb WHERE Register_Number = ?");
     $stmt->bind_param("s", $register_number);
@@ -88,6 +92,7 @@ function registerNumberExists($register_number)
     $result = $stmt->get_result();
     return $result->num_rows > 0;
 }
+
 
 function Verification($email, $register_number, $name)
 {
@@ -116,52 +121,57 @@ function Verification($email, $register_number, $name)
             <html>
             <head>
                 <style>
-                    /* Global styles */
-                    body {
-                        font-family: Arial, sans-serif;
-                        background-color: #f5f5f5;
-                        margin: 0;
-                        padding: 0;
-                    }
+                body {
+                    margin: 0;
+                    padding: 0;
+                    font-family: Arial, sans-serif;
+                    background-color: #f8f9fa;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    background-color: #ffffff;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    background-color: #007bff;
+                    color: #ffffff;
+                    padding: 20px;
+                    text-align: center;
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                }
+                .content {
+                    padding: 30px;
+                    text-align: center;
+                }
+                .footer {
+                    background-color: #007bff;
+                    color: #ffffff;
+                    padding: 20px;
+                    text-align: center;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+                .button {
+                    display: inline-block;
+                    background-color: #007bff;
+                    color: #ffffff;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    transition: background-color 0.3s ease;
+                }
+                .button:hover {
+                    background-color: #0056b3; 
+                }
+                @media only screen and (max-width: 600px) {
                     .container {
-                        max-width: 600px;
-                        margin: auto;
-                        background-color: #ffffff;
-                        border-radius: 10px;
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        width: 100%;
+                        border-radius: 0;
                     }
-                    .header {
-                        background-color: #4caf50;
-                        color: #ffffff;
-                        padding: 10px;
-                        text-align: center;
-                        border-top-left-radius: 10px;
-                        border-top-right-radius: 10px;
-                    }
-                    .content {
-                        padding: 30px;
-                        text-align: center;
-                    }
-                    .footer {
-                        background-color: #4caf50;
-                        color: #ffffff;
-                        padding: 10px;
-                        text-align: center;
-                        border-bottom-left-radius: 10px;
-                        border-bottom-right-radius: 10px;
-                    }
-                    .button {
-                        display: inline-block;
-                        background-color: #4caf50;
-                        color: #ffffff;
-                        padding: 10px 20px;
-                        text-decoration: none;
-                        border-radius: 5px;
-                        transition: background-color 0.3s ease;
-                    }
-                    .button:hover {
-                        background-color: #388e3c; /* Darker shade of green on hover */
-                    }
+                }
                 </style>
             </head>
             <body>
@@ -188,11 +198,10 @@ function Verification($email, $register_number, $name)
 
         $mail->send();
     } catch (Exception $e) {
-        echo '<script>alert("Verification Emails are not sent to Register Number ' . $register_number . '");</script>'; // Display popup message if email sending fails
+        showNotification("Verification Emails are not sent to Register Number " . $register_number . ".", "error");
     }
 }
 ?>
-
 
 
 
